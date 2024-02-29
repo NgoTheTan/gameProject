@@ -62,8 +62,8 @@ void renderTexture(SDL_Texture *texture, int x, int y,
 	SDL_Rect dest;
 	dest.x = x;
 	dest.y = y;
-	dest.w=50;
-	dest.h=50;
+	dest.w=300;
+	dest.h=200;
 
 	SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
@@ -125,14 +125,19 @@ int main(int argc, char* argv[])
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(background);
     background=NULL;
-
+    waitUntilKeyPressed();
 
     SDL_Texture* spongeBob = loadTexture("image\\Spongebob.png", renderer);
+    renderTexture(spongeBob, 500, 300, renderer);
+    SDL_RenderPresent(renderer);
+
+    waitUntilKeyPressed();
+
     SDL_Rect spongeBobSrc;
-    spongeBobSrc.x=50;
-    spongeBobSrc.y=50;
-    spongeBobSrc.w=100;
-    spongeBobSrc.h=100;
+    spongeBobSrc.x=0;
+    spongeBobSrc.y=0;
+    spongeBobSrc.h=150;
+    spongeBobSrc.w=150;
     SDL_RenderCopy(renderer, spongeBob, &spongeBobSrc, NULL);
 
     //Hiện bản vẽ ra màn hình
