@@ -4,6 +4,8 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1709310481 source:d:\study\cpp\gameproject\main.cpp
+1709869462 source:d:\study\cpp\gameproject\main.cpp
 	<bits/stdc++.h>
+	<cstdlib>
+	<ctime>
 
