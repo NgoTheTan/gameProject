@@ -21,23 +21,50 @@ int main(int argc, char* argv[])
     Graphics graphics;
     graphics.init();
 
-    SDL_Texture* background = graphics.loadTexture("image//bikiniBottom.jpg");
-    graphics.createBackground(background);
+    SDL_Rect rect;
+    rect.x=100;
+    rect.y=100;
+    rect.h=100;
+    rect.w=100;
+    SDL_SetRenderDrawColor(graphics.renderer, 255, 255, 255, 0 );
+    SDL_RenderFillRect(graphics.renderer, &rect);
+    SDL_RenderPresent(graphics.renderer);
 
-    graphics.present();
-    waitUntilKeyPressed();
+    SDL_Event event;
+    int x, y;
+    while (true) {
+        SDL_GetMouseState(&x, &y);
+        //if (x>100 && y>100 && x<200 && y<200) cerr << "In" << endl;
+        //else cerr << "Out" << endl;
 
-    SDL_Texture* spongeBob = graphics.loadTexture("image//Spongebob.png");
-    graphics.renderTexture(spongeBob, 500, 300);
+        SDL_PollEvent(&event);
+        switch (event.type) {
+        case SDL_MOUSEBUTTONDOWN:
+            switch (event.button.button){
+            case SDL_BUTTON_LEFT:
+                cerr << "Left mouse button pressed at (" << x << "," << y << ")\n";
+                break;
+            case SDL_BUTTON_RIGHT:
+                cerr << "Right mouse button pressed at (" << x << "," << y << ")\n";
+                break;
+            }
+            break;
+        case SDL_MOUSEBUTTONUP:
+            switch (event.button.button){
+            case SDL_BUTTON_LEFT:
+                cerr << "Left mouse button released at (" << x << "," << y << ")\n";
+                break;
+            case SDL_BUTTON_RIGHT:
+                cerr << "Right mouse button released at (" << x << "," << y << ")\n";
+                break;
+            }
+            break;
+        case SDL_QUIT:
+            exit(0);
+            break;
+        }
+        SDL_Delay(100);
+    }
 
-    graphics.present();
-    waitUntilKeyPressed();
-
-    SDL_DestroyTexture( spongeBob );
-    spongeBob = NULL;
-    SDL_DestroyTexture( background );
-    background = NULL;
-
-    graphics.quit();
     return 0;
 }
