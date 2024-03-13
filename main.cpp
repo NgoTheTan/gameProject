@@ -171,6 +171,96 @@ void mineSwepper(char a[][10], const int m, const int n)
         cout << endl;
     }
 }
+void snailArray(const int m, const int n)
+{
+    int a[m][n]={{},{}};
+    int maximum=m*n, k=1;
+    int chieu_dai=n, chieu_rong=m, i=0, j=0, rounds1=0, rounds2=1;
+    while (k<=maximum){
+        while (j<chieu_dai){
+            a[i][j]=k;
+            k++;
+            j++;
+        }
+        if (k>maximum) break;
+        j--; k--;
+        while (i<chieu_rong){
+            a[i][j]=k;
+            k++;
+            i++;
+        }
+        if (k>maximum) break;
+        i--; k--;
+        while (j>=rounds1){
+            a[i][j]=k;
+            k++;
+            j--;
+        }
+        if (k>maximum) break;
+        j++; k--;
+        while (i>=rounds2){
+            a[i][j]=k;
+            k++;
+            i--;
+        }
+        if (k>maximum) break;
+        i++; k--;
+        chieu_dai--; chieu_rong--; rounds1++; rounds2++;
+    }
+    for (int i=0; i<m; i++){
+        for (int j=0; j<n; j++){
+            cout << a[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+void magicalArray(const int n)
+{
+    int count=1;
+    int a[n][n];
+    for (int i=0; i<n; i++){
+        for (int j=0; j<n; j++){
+            a[i][j]=0;
+        }
+    }
+    a[0][n/2]=1;
+    int x=0;
+    int y=n/2;
+
+    for(int i=0; i<n*n; i++){
+        if(x==0 and (y!=n-1) and a[n-1][y+1]==0){
+            x=n-1;
+            y++;
+            count++;
+            a[x][y]=count;
+        } else if(x!=0 and y!=n-1 and a[x-1][y+1]==0){
+            x=x-1;
+            y++;
+            count++;
+            a[x][y]=count;
+        } else if(x!=0 and y==n-1 and a[x-1][0]==0){
+            x=x-1;
+            y=0;
+            count++;
+            a[x][y]=count;
+        } else if(x!=0 and y!=n-1 and a[x-1][y+1]!=0){
+            x=x+1;
+            count++;
+            a[x][y]=count;
+        } else if(x==0 and y==n-1){
+            x=x+1;
+            count++;
+            a[x][y]=count;
+        }
+    }
+
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            cout << a[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 int main()
  {
     /* cau 6 phan a
@@ -199,12 +289,7 @@ int main()
     for (int i=0; i<n; i++){
         cout << a[i] << " ";
     }*/
-    int m, n; cin >> m >> n;
-    char a[m][10];
-    for (int i=0; i<m; i++){
-        for (int j=0; j<n; j++){
-            cin >> a[i][j];
-        }
-    }
-    mineSwepper(a,m,n);
+    int n; cin >> n;
+    magicalArray(n);
+    return 0;
  }
