@@ -4,7 +4,7 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1710150795 source:d:\study\cpp\gameproject\main.cpp
+1710310867 source:d:\study\cpp\gameproject\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -13,7 +13,7 @@
 
 1710145248 d:\study\cpp\gameproject\defs.h
 
-1710145172 d:\study\cpp\gameproject\graphics.h
+1710312309 d:\study\cpp\gameproject\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	"defs.h"

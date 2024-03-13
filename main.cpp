@@ -40,24 +40,18 @@ int main(int argc, char* argv[])
         SDL_PollEvent(&event);
         switch (event.type) {
         case SDL_MOUSEBUTTONDOWN:
-            switch (event.button.button){
-            case SDL_BUTTON_LEFT:
-                cerr << "Left mouse button pressed at (" << x << "," << y << ")\n";
-                break;
-            case SDL_BUTTON_RIGHT:
-                cerr << "Right mouse button pressed at (" << x << "," << y << ")\n";
-                break;
-            }
+            if (event.button.button==SDL_BUTTON_LEFT) cerr << "Left mouse button pressed at (" << x << "," << y << ")\n";
+            if (event.button.button==SDL_BUTTON_RIGHT) cerr << "Right mouse button pressed at (" << x << "," << y << ")\n";
+            if (event.button.button==SDL_BUTTON_MIDDLE) cerr << "Middle mouse button pressed at(" << x << "," << y << ")\n";
+            if (event.button.button==SDL_BUTTON_X2) cerr << "Forward mouse button pressed at(" << x << "," << y << ")" << endl;
+            if (event.button.button==SDL_BUTTON_X1) cerr << "Backward mouse button pressed at(" << x << "," << y << ")" << endl;
             break;
         case SDL_MOUSEBUTTONUP:
-            switch (event.button.button){
-            case SDL_BUTTON_LEFT:
-                cerr << "Left mouse button released at (" << x << "," << y << ")\n";
-                break;
-            case SDL_BUTTON_RIGHT:
-                cerr << "Right mouse button released at (" << x << "," << y << ")\n";
-                break;
-            }
+            if (event.button.button==SDL_BUTTON_LEFT) cerr << "Left mouse button released at (" << x << "," << y << ")\n";
+            if (event.button.button==SDL_BUTTON_RIGHT) cerr << "Right mouse button released at (" << x << "," << y << ")\n";
+            if (event.button.button==SDL_BUTTON_MIDDLE) cerr << "Middle mouse button pressed at (" << x << "," << y << ")\n";
+            if (event.button.button==SDL_BUTTON_X1) cerr << "Backward mouse button released at(" << x << "," << y << ")" << endl;
+            if (event.button.button==SDL_BUTTON_X2) cerr << "Forward mouse button released at(" << x << "," << y << ")" << endl;
             break;
         case SDL_QUIT:
             exit(0);
