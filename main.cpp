@@ -17,47 +17,31 @@ void waitUntilKeyPressed()
     }
 }
 
-void processClick(int x, int y, Tictactoe& game)
-{
-    if ((x%CELL_SIZE>=0 && x%CELL_SIZE<=3) || (x%CELL_SIZE>=27 && x%CELL_SIZE<=29) ||(y%CELL_SIZE>=0 && y%CELL_SIZE<=3) || (y%CELL_SIZE>=27 && y%CELL_SIZE<=29) ) return;
-    int clickedCol=(y-BOARD_X)/CELL_SIZE;
-    int clickedRow=(x-BOARD_Y)/CELL_SIZE;
-    game.move(clickedCol, clickedRow);
-}
-
 int main(int argc, char* argv[])
 {
     Graphics graphics;
     graphics.init();
 
-    Tictactoe game;
-    game.init();
-    graphics.render(game);
-    int x,y;
+    bool quit = false;
     SDL_Event event;
-    bool quit=false;
-    while (!quit){
-        SDL_PollEvent(&event);
-        switch(event.type){
-            case SDL_QUIT:
-                quit=true;
-                break;
-            case SDL_KEYDOWN:
-                if (event.key.keysym.scancode==SDL_SCANCODE_R){
-                    game.movePlayed=X_CELL;
-                    game.init();
-                    graphics.render(game);
-                }
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.button==SDL_BUTTON_LEFT){
-                    SDL_GetMouseState(&x, &y);
-                    processClick(x,y,game);
-                    graphics.render(game);
-                }
-                break;
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) quit = true;
         }
-    }
-    graphics.quit();
 
+        const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+        if (currentKeyStates[SDL_SCANCODE_UP] ) cerr << " Up";
+        if (currentKeyStates[SDL_SCANCODE_DOWN] ) cerr << " Down";
+        if (currentKeyStates[SDL_SCANCODE_LEFT] ) cerr << " Left";
+        if (currentKeyStates[SDL_SCANCODE_RIGHT] ) cerr << " Right";
+
+        cerr << ".\n";
+
+        SDL_Delay(100);
+    }
+
+    graphics.quit();
     return 0;
+
 }

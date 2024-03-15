@@ -26,10 +26,6 @@ void Graphics::initSDL()
 void Graphics::init()
 {
     Graphics::initSDL();
-    background=Graphics::loadTexture("image//bikiniBottom.jpg");
-    blank=Graphics::loadTexture("image//blank.png");
-    cellX=Graphics::loadTexture("image//X.png");
-    cellO=Graphics::loadTexture("image//O.png");
 }
 
 void Graphics::createBackground(SDL_Texture *background)
@@ -59,28 +55,8 @@ void Graphics::renderTexture(SDL_Texture* texture, int x, int y)
     SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
 
-void Graphics::render(const Tictactoe& game)
-{
-    for (int i = 0; i < BOARD_HEIGHT; i++){
-        for (int j = 0; j < BOARD_WIDTH; j++){
-            int x=BOARD_X+j*CELL_SIZE;
-            int y=BOARD_Y+i*CELL_SIZE;
-            switch (game.board[i][j]) {
-                case BLANK_CELL: Graphics::renderTexture(blank, x, y); break;
-                case X_CELL: Graphics::renderTexture(cellX, x, y); break;
-                case O_CELL: Graphics::renderTexture(cellO, x, y); break;
-            };
-        };
-    }
-    Graphics::present();
-}
-
 void Graphics::quit()
 {
-    SDL_DestroyTexture(blank); blank=nullptr;
-    SDL_DestroyTexture(cellO); cellO=nullptr;
-    SDL_DestroyTexture(cellX); cellX=nullptr;
-
     IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

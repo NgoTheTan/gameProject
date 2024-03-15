@@ -9,7 +9,6 @@ struct Graphics
 {
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_Texture *cellX, *cellO, *blank, *background;
 
     void logErrorAndExit(const char* msg, const char* error);
 
@@ -24,8 +23,6 @@ struct Graphics
     SDL_Texture* loadTexture(const char *filename);
 
     void renderTexture(SDL_Texture* texture, int x, int y);
-
-    void render(const Tictactoe& game);
 
     void quit();
 };
