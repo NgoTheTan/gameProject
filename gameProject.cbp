@@ -33,7 +33,10 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="defs.h" />
+		<Unit filename="graphics.cpp" />
 		<Unit filename="graphics.h" />
+		<Unit filename="logic.cpp" />
+		<Unit filename="logic.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

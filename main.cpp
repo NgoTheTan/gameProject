@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include "defs.h"
 #include "graphics.h"
+#include "logic.h"
 using namespace std;
 
 void waitUntilKeyPressed()
@@ -16,49 +17,47 @@ void waitUntilKeyPressed()
     }
 }
 
+void processClick(int x, int y, Tictactoe& game)
+{
+    if ((x%CELL_SIZE>=0 && x%CELL_SIZE<=3) || (x%CELL_SIZE>=27 && x%CELL_SIZE<=29) ||(y%CELL_SIZE>=0 && y%CELL_SIZE<=3) || (y%CELL_SIZE>=27 && y%CELL_SIZE<=29) ) return;
+    int clickedCol=(y-BOARD_X)/CELL_SIZE;
+    int clickedRow=(x-BOARD_Y)/CELL_SIZE;
+    game.move(clickedCol, clickedRow);
+}
+
 int main(int argc, char* argv[])
 {
     Graphics graphics;
     graphics.init();
 
-    SDL_Rect rect;
-    rect.x=100;
-    rect.y=100;
-    rect.h=100;
-    rect.w=100;
-    SDL_SetRenderDrawColor(graphics.renderer, 255, 255, 255, 0 );
-    SDL_RenderFillRect(graphics.renderer, &rect);
-    SDL_RenderPresent(graphics.renderer);
-
+    Tictactoe game;
+    game.init();
+    graphics.render(game);
+    int x,y;
     SDL_Event event;
-    int x, y;
-    while (true) {
-        SDL_GetMouseState(&x, &y);
-        //if (x>100 && y>100 && x<200 && y<200) cerr << "In" << endl;
-        //else cerr << "Out" << endl;
-
+    bool quit=false;
+    while (!quit){
         SDL_PollEvent(&event);
-        switch (event.type) {
-        case SDL_MOUSEBUTTONDOWN:
-            if (event.button.button==SDL_BUTTON_LEFT) cerr << "Left mouse button pressed at (" << x << "," << y << ")\n";
-            if (event.button.button==SDL_BUTTON_RIGHT) cerr << "Right mouse button pressed at (" << x << "," << y << ")\n";
-            if (event.button.button==SDL_BUTTON_MIDDLE) cerr << "Middle mouse button pressed at(" << x << "," << y << ")\n";
-            if (event.button.button==SDL_BUTTON_X2) cerr << "Forward mouse button pressed at(" << x << "," << y << ")" << endl;
-            if (event.button.button==SDL_BUTTON_X1) cerr << "Backward mouse button pressed at(" << x << "," << y << ")" << endl;
-            break;
-        case SDL_MOUSEBUTTONUP:
-            if (event.button.button==SDL_BUTTON_LEFT) cerr << "Left mouse button released at (" << x << "," << y << ")\n";
-            if (event.button.button==SDL_BUTTON_RIGHT) cerr << "Right mouse button released at (" << x << "," << y << ")\n";
-            if (event.button.button==SDL_BUTTON_MIDDLE) cerr << "Middle mouse button pressed at (" << x << "," << y << ")\n";
-            if (event.button.button==SDL_BUTTON_X1) cerr << "Backward mouse button released at(" << x << "," << y << ")" << endl;
-            if (event.button.button==SDL_BUTTON_X2) cerr << "Forward mouse button released at(" << x << "," << y << ")" << endl;
-            break;
-        case SDL_QUIT:
-            exit(0);
-            break;
+        switch(event.type){
+            case SDL_QUIT:
+                quit=true;
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.scancode==SDL_SCANCODE_R){
+                    game.movePlayed=X_CELL;
+                    game.init();
+                    graphics.render(game);
+                }
+            case SDL_MOUSEBUTTONDOWN:
+                if (event.button.button==SDL_BUTTON_LEFT){
+                    SDL_GetMouseState(&x, &y);
+                    processClick(x,y,game);
+                    graphics.render(game);
+                }
+                break;
         }
-        SDL_Delay(100);
     }
+    graphics.quit();
 
     return 0;
 }
