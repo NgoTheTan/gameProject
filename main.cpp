@@ -21,27 +21,32 @@ int main(int argc, char* argv[])
 {
     Graphics graphics;
     graphics.init();
+    Mouse mouse;
+    mouse.x = SCREEN_WIDTH / 2;
+    mouse.y = SCREEN_HEIGHT / 2;
 
     bool quit = false;
     SDL_Event event;
-    while (!quit) {
+    while (!quit && !gameOver(mouse)) {
+        graphics.prepareScene();
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) quit = true;
         }
 
         const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-        if (currentKeyStates[SDL_SCANCODE_UP] ) cerr << " Up";
-        if (currentKeyStates[SDL_SCANCODE_DOWN] ) cerr << " Down";
-        if (currentKeyStates[SDL_SCANCODE_LEFT] ) cerr << " Left";
-        if (currentKeyStates[SDL_SCANCODE_RIGHT] ) cerr << " Right";
+        if (currentKeyStates[SDL_SCANCODE_UP]) mouse.up();
+        if (currentKeyStates[SDL_SCANCODE_DOWN]) mouse.down();
+        if (currentKeyStates[SDL_SCANCODE_LEFT]) mouse.left();
+        if (currentKeyStates[SDL_SCANCODE_RIGHT]) mouse.right();
 
-        cerr << ".\n";
+        render(mouse, graphics);
 
-        SDL_Delay(100);
+        graphics.present();
+        SDL_Delay(10);
     }
 
     graphics.quit();
     return 0;
-
 }

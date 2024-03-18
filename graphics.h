@@ -4,7 +4,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "defs.h"
-#include "logic.h"
 struct Graphics
 {
     SDL_Window *window;
@@ -16,7 +15,9 @@ struct Graphics
 
     void init();
 
-    void createBackground(SDL_Texture *background);
+    void prepareScene();
+
+    void createBackground(SDL_Texture* background);
 
     void present();
 

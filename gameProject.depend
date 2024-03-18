@@ -4,7 +4,7 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1710497411 source:d:\study\cpp\gameproject\main.cpp
+1710773404 source:d:\study\cpp\gameproject\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -12,22 +12,24 @@
 	"graphics.h"
 	"logic.h"
 
-1710497354 d:\study\cpp\gameproject\defs.h
+1710733010 d:\study\cpp\gameproject\defs.h
 
-1710497354 d:\study\cpp\gameproject\graphics.h
+1710733179 d:\study\cpp\gameproject\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	"defs.h"
-	"logic.h"
 
-1710497364 source:d:\study\cpp\gameproject\graphics.cpp
+1710733202 source:d:\study\cpp\gameproject\graphics.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<bits/stdc++.h>
 	"graphics.h"
 
-1710497354 d:\study\cpp\gameproject\logic.h
+1710773362 d:\study\cpp\gameproject\logic.h
+	"graphics.h"
 
-1710497354 source:d:\study\cpp\gameproject\logic.cpp
+1710773404 source:d:\study\cpp\gameproject\logic.cpp
 	"logic.h"
+	<bits/stdc++.h>
+	"graphics.h"
 

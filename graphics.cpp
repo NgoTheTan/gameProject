@@ -28,6 +28,12 @@ void Graphics::init()
     Graphics::initSDL();
 }
 
+void Graphics::prepareScene()
+{
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+}
+
 void Graphics::createBackground(SDL_Texture *background)
 {
     SDL_RenderClear(renderer);
@@ -57,6 +63,7 @@ void Graphics::renderTexture(SDL_Texture* texture, int x, int y)
 
 void Graphics::quit()
 {
+
     IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
