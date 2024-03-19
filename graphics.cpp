@@ -2,7 +2,21 @@
 #include <SDL_image.h>
 #include <bits/stdc++.h>
 #include "graphics.h"
-
+void ScrollingBackground::setTexture(SDL_Texture *_texture)
+{
+    texture=_texture;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+}
+void ScrollingBackground::moveForward()
+{
+    scrollingOffset-=STEP;
+    if (scrollingOffset<0) scrollingOffset=width;
+}
+void ScrollingBackground::goBack()
+{
+    scrollingOffset+=STEP;
+    if (scrollingOffset>SCREEN_WIDTH) scrollingOffset=0;
+}
 void Graphics::logErrorAndExit(const char* msg, const char* error)
 {
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "%s: %s", msg, error);
@@ -45,6 +59,11 @@ void Graphics::present()
     SDL_RenderPresent(renderer);
 }
 
+void Graphics::render(const ScrollingBackground& background)
+{
+    Graphics::renderTexture(background.texture, background.scrollingOffset, 0);
+    Graphics::renderTexture(background.texture, background.scrollingOffset-background.width,0);
+}
 SDL_Texture* Graphics::loadTexture(const char *filename)
 {
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);

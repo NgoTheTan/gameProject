@@ -1,21 +1,13 @@
 #include "logic.h"
 #include <bits/stdc++.h>
 #include "graphics.h"
-void Mouse::left()
+void Mouse::jump()
 {
-    y=y; x-=move;
+    y-=JUMP;
 }
-void Mouse::right()
+void Mouse::fall()
 {
-    y=y; x+=move;
-}
-void Mouse::up()
-{
-    y-=move; x=x;
-}
-void Mouse::down()
-{
-    y+=move; x=x;
+    y+=FALL;
 }
 void render(const Mouse& mouse, const Graphics& graphics)
 {

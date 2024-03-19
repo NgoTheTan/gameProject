@@ -21,9 +21,13 @@ int main(int argc, char* argv[])
 {
     Graphics graphics;
     graphics.init();
+
+    ScrollingBackground background;
+    background.setTexture(graphics.loadTexture("image//bikiniBottom.jpg"));
+
     Mouse mouse;
-    mouse.x = SCREEN_WIDTH / 2;
-    mouse.y = SCREEN_HEIGHT / 2;
+    mouse.x = SCREEN_WIDTH/2;
+    mouse.y = SCREEN_HEIGHT/2;
 
     bool quit = false;
     SDL_Event event;
@@ -36,17 +40,17 @@ int main(int argc, char* argv[])
 
         const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-        if (currentKeyStates[SDL_SCANCODE_UP]) mouse.up();
-        if (currentKeyStates[SDL_SCANCODE_DOWN]) mouse.down();
-        if (currentKeyStates[SDL_SCANCODE_LEFT]) mouse.left();
-        if (currentKeyStates[SDL_SCANCODE_RIGHT]) mouse.right();
-
+        if (currentKeyStates[SDL_SCANCODE_SPACE]){
+            mouse.jump();
+        }
+        background.moveForward();
+        mouse.fall();
+        graphics.render(background);
         render(mouse, graphics);
-
         graphics.present();
         SDL_Delay(10);
     }
-
+    SDL_DestroyTexture(background.texture);
     graphics.quit();
     return 0;
 }

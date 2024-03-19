@@ -4,6 +4,16 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "defs.h"
+
+struct ScrollingBackground
+{
+    SDL_Texture *texture;
+    int scrollingOffset=0;
+    int width, height;
+    void setTexture(SDL_Texture *_texture);
+    void moveForward();
+    void goBack();
+};
 struct Graphics
 {
     SDL_Window *window;
@@ -18,6 +28,8 @@ struct Graphics
     void prepareScene();
 
     void createBackground(SDL_Texture* background);
+
+    void render(const ScrollingBackground &background);
 
     void present();
 
