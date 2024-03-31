@@ -4,11 +4,11 @@
 #include "graphics.h"
 struct Mouse {
     int x, y;
-    void jump();
-    void fall();
+    int move=STEP;
+    void left();
+    void right();
+    void up();
+    void down();
 };
-
-void render(const Mouse& mouse, const Graphics& graphics);
 bool gameOver(const Mouse& mouse);
-
 #endif // _LOGIC__H

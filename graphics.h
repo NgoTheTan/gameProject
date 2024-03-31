@@ -4,6 +4,24 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "defs.h"
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Sprite
+{
+    SDL_Texture* texture;
+    vector<SDL_Rect> clips;
+    int currentFrame = 0;
+
+    void init(SDL_Texture* _texture, int frames, const int _clips [][4]);
+    void tick();
+    const SDL_Rect* getCurrentClip() const;
+};
+
+struct Character
+{
+    Sprite backView, frontView, leftView, rightView, standStill;
+};
 
 struct ScrollingBackground
 {
@@ -29,7 +47,9 @@ struct Graphics
 
     void createBackground(SDL_Texture* background);
 
-    void render(const ScrollingBackground &background);
+    void renderBackground(const ScrollingBackground &background);
+
+    void renderSprite(int x, int y, const Sprite& sprite);
 
     void present();
 
@@ -39,4 +59,6 @@ struct Graphics
 
     void quit();
 };
+
+
 #endif // _GRAPHICS__H
