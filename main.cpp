@@ -1,57 +1,148 @@
 #include <bits/stdc++.h>
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
 using namespace std;
-void f(int a[])
+struct Point
 {
-    cout << sizeof(a) << endl; // in ra dung kich thuoc cua mot bien int* la 8, du kich thuoc cua mang truyen vao co la bao nhieu di nua
-}
-int count_even(int* a, int n)
-{
-    int even=0;
-    for (int i=0; i<n; i++){
-        if (a[i]%2==0) even++;
+    float x, y;
+    Point()
+    {
+        x=0; y=0;
     }
-    return even;
-}
-bool binarySearch(int *a, int l, int r, int x)
+    Point(float _x, float _y)
+    {
+        x=_x; y=_y;
+    }
+};
+
+void print(Point p)
 {
-    if (l>r) return false;
-    int m=l+(r-l)/2;
-    if (a[m]==x) return true;
-    if (a[m]>x) binarySearch(a, l, r-m-1, x);
-    if (a[m]<x) binarySearch(a, l+m+1, r, x);
+    cout << p.x << " " << p.y << endl;
 }
-char* weird_string() {
-   char c[] = "12345";
-   return c;
-}// khong in ra gi
-//int main(int argc, const char * argv[]) {
-//	cout << "Number of command-line arguments: " << argc << endl;
-//	for (int i = 0; i < argc; i++) {
-//		cout << "Argument #" << i << ": _" << argv[i] << "_\n";
-//	}
-//	return 0;
-//}
-int demSoLanXuatHien(const char* a, const char* b)
+Point midPoint(const Point a,const Point b)
 {
-    int cnt=0;
-    int lenA=strlen(a);
-    int lenB=strlen(b);
-    for (int i=0; i<lenB; i++){
-        char temp1[lenA], temp2[lenA];//em khong hieu vi sao co bien temp2 thi code cho ra ket qua dung
-        for (int j=0; j<lenA; j++){
-            temp1[j]=b[j+i];
-        }
-        if (strcmp(temp1,a)==0){
-            cnt++;
+    Point m;
+    m.x=(a.x+b.x)/2;
+    m.y=(a.y+b.y)/2;
+    return m;
+}
+
+struct Rect
+{
+    float x, y, w, h;
+    Rect()
+    {
+        x=0; y=0; w=0; h=0;
+    }
+    Rect(float _x, float _y, float _w, float _h)
+    {
+        x=_x; y=_y; w=_w; h=_h;
+    }
+    bool contains(const Point p)
+    {
+        if (p.x>=x && p.y<=y && p.x<=x+w && p.y>=y-h) return true;
+        return false;
+    }
+};
+
+struct Ship
+{
+    Rect board; string id; float dx; float dy;
+    Ship(){}
+    Ship(Rect _board, string _id, float _dx, float _dy)
+    {
+        board=_board; id=_id; dx=_dx; dy=_dy;
+    }
+    void move()
+    {
+        board.x+=dx; board.y+=dy;
+    }
+};
+
+void display(const Ship &ship)
+{
+    cout << ship.id << endl << ship.board.x << " " << ship.board.y << endl;
+}
+//Cau8: vi tri tuong doi cua mot bien kieu Point va truong x cua no la trung nhau, trong khi truong y nam ben canh ve phia ben phai truong x.
+void passByValue (Point a)
+{
+    cout << &a << endl;
+    float temp=a.x;
+    a.x=a.y;
+    a.y=temp;
+}
+void passByReference(Point &a)
+{
+    cout << &a << endl;
+    float temp=a.x;
+    a.x=a.y;
+    a.y=temp;
+}
+struct Array
+{
+   int n;
+   int* arr;
+   Array(int _n) {
+      n = _n;
+      arr = new int[n];
+   }
+};
+// Cau 10: Khi bien struct duoc sao chep co truong du lieu la mang thi phep gan copy nong khong co tac dung gi, cac phan tu trong mang duoc gan khong giong voi mang dung de gan.
+struct String
+{
+    int n;
+    char* str;
+    String(const char* s)
+    {
+        n=strlen(s);
+        str=new char[n];
+        for (int i=0; i<n; i++){
+            str[i]=s[i];
         }
     }
-    return cnt;
-}
+    ~String()
+    {
+        delete [] str;
+    }
+    void print()
+    {
+        cout << str << endl;
+    }
+    void append(const char *sub)
+    {
+        int len=strlen(sub);
+        int total=n+len;
+        char *temp=new char[total];
+        for (int i=0; i<n; i++){
+            temp[i]=str[i];
+        }
+        for (int i=0; i<len; i++){
+            temp[i+n]=sub[i];
+        }
+        delete [] str;
+        str=new char[total];
+        for (int i=0; i<total; i++){
+            str[i]=temp[i];
+        }
+        str[total]='\0';
+        delete [] temp;
+    }
+};
 int main()
 {
-    char a[100], b[1000]; cin >> a >> b;
-    cout << demSoLanXuatHien(a,b) << endl;
+    //demo struct Point, Rect va Ship
+//    Point a(1.1,1.8), b(3.3,4.4);
+//    print(midPoint(a,b)); // in ra 2.2 3.3
+//    Rect hcn(1, 2, 3, 4);
+//    if (hcn.contains(a)) cout << "yes" << endl;
+//    else cout << "no" << endl; // in ra yes
+//    if (hcn.contains(b)) cout << "yes" << endl;
+//    else cout << "no" << endl; //in ra no
+//    Ship Tan(hcn, "TAN", 1, 2);
+//    for (int i=0; i<5; i++){
+//        Tan.move();
+//        display(Tan);
+//    }
+    String s("Hello");
+    s.print();
+    s.append(" Tan");
+    s.print();
 }
