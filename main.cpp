@@ -22,6 +22,10 @@ int main(int argc, char* argv[])
     Graphics graphics;
     graphics.init();
 
+    Mix_Music *gMusic = graphics.loadMusic("music\\RunningAway.mp3");
+    graphics.playMusic(gMusic);
+    Mix_Chunk *gJump = graphics.loadSound("music\\jump.wav");
+
     ScrollingBackground background;
     background.setTexture(graphics.loadTexture("image//r.jpg"));
 
@@ -71,11 +75,14 @@ int main(int argc, char* argv[])
             man.standStill.currentFrame=2;
         }
         else graphics.renderSprite(mouse.x, mouse.y, man.standStill);
+        if (currentKeyStates[SDL_SCANCODE_UP]) graphics.playSound(gJump);
         graphics.present();
         SDL_Delay(90);
     }
     SDL_DestroyTexture( manTexture ); manTexture = NULL;
     SDL_DestroyTexture(background.texture);
+    if (gMusic != nullptr) Mix_FreeMusic(gMusic);
+    if (gJump != nullptr) Mix_FreeChunk(gJump);
     graphics.quit();
     return 0;
 }

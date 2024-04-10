@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include "defs.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -56,6 +57,14 @@ struct Graphics
     SDL_Texture* loadTexture(const char *filename);
 
     void renderTexture(SDL_Texture* texture, int x, int y);
+
+    Mix_Music *loadMusic(const char* path);
+
+    Mix_Chunk* loadSound(const char* path);
+
+    void playMusic(Mix_Music *gMusic);
+
+    void playSound(Mix_Chunk* gChunk);
 
     void quit();
 };
