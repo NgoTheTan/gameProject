@@ -1,6 +1,5 @@
 #include "logic.h"
 #include <bits/stdc++.h>
-#include "graphics.h"
 void Mouse::left()
 {
     y=y; x-=move;

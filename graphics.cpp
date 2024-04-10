@@ -1,5 +1,3 @@
-#include <SDL.h>
-#include <SDL_image.h>
 #include <bits/stdc++.h>
 #include "graphics.h"
 void Sprite::init(SDL_Texture* _texture, int frames, const int _clips [][4]){
@@ -56,6 +54,9 @@ void Graphics::initSDL()
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
     if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
         logErrorAndExit( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+    }
+    if (TTF_Init() == -1){
+        logErrorAndExit("SDL_ttf could not initialize! SDL_ttf Error: ", TTF_GetError());
     }
 }
 
@@ -142,8 +143,32 @@ void Graphics::playSound(Mix_Chunk* gChunk)
     }
 }
 
+TTF_Font* Graphics::loadFont(const char* path, int size)
+    {
+    TTF_Font* gFont =TTF_OpenFont( path, size );
+    if (gFont == nullptr){
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load font %s", TTF_GetError());
+    }
+}
+
+SDL_Texture* Graphics::renderText(const char* text, TTF_Font* font, SDL_Color textColor)
+{
+    SDL_Surface* textSurface = TTF_RenderText_Solid( font, text, textColor );
+    if( textSurface == nullptr ){
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Render text surface %s", TTF_GetError());
+        return nullptr;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer, textSurface );
+    if( texture == nullptr ){
+        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Create texture from text %s", SDL_GetError());
+    }
+    SDL_FreeSurface( textSurface );
+    return texture;
+}
+
 void Graphics::quit()
 {
+    TTF_Quit();
     Mix_Quit();
     IMG_Quit();
     SDL_DestroyRenderer(renderer);

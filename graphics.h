@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include "defs.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -65,6 +66,10 @@ struct Graphics
     void playMusic(Mix_Music *gMusic);
 
     void playSound(Mix_Chunk* gChunk);
+
+    TTF_Font* loadFont(const char* path, int size);
+
+    SDL_Texture* renderText(const char* text, TTF_Font* font, SDL_Color textColor);
 
     void quit();
 };

@@ -1,6 +1,4 @@
 #include <iostream>
-#include <SDL.h>
-#include <SDL_image.h>
 #include "defs.h"
 #include "graphics.h"
 #include "logic.h"
@@ -22,12 +20,16 @@ int main(int argc, char* argv[])
     Graphics graphics;
     graphics.init();
 
-    Mix_Music *gMusic = graphics.loadMusic("music\\RunningAway.mp3");
+    TTF_Font* font = graphics.loadFont("assets//font//Purisa-BoldOblique.ttf", 100);
+    SDL_Color color = {255, 255, 0, 0};
+    SDL_Texture* helloText = graphics.renderText("Hello", font, color);
+
+    Mix_Music *gMusic = graphics.loadMusic("assets//music//RunningAway.mp3");
     graphics.playMusic(gMusic);
-    Mix_Chunk *gJump = graphics.loadSound("music\\jump.wav");
+    Mix_Chunk *gJump = graphics.loadSound("assets//music//jump.wav");
 
     ScrollingBackground background;
-    background.setTexture(graphics.loadTexture("image//r.jpg"));
+    background.setTexture(graphics.loadTexture("assets//image//r.jpg"));
 
     Character man;
     SDL_Texture* manTexture=graphics.loadTexture(MAN_SPRITE_FILE);
@@ -45,11 +47,15 @@ int main(int argc, char* argv[])
     while (!quit && !gameOver(mouse)){
         graphics.prepareScene();
 
+        graphics.renderBackground(background);
+
+        graphics.renderTexture(helloText, 200, 200);
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) quit = true;
         }
         const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-        graphics.renderBackground(background);
+
         if (currentKeyStates[SDL_SCANCODE_W]){
             mouse.up();
             man.backView.tick();
@@ -83,6 +89,9 @@ int main(int argc, char* argv[])
     SDL_DestroyTexture(background.texture);
     if (gMusic != nullptr) Mix_FreeMusic(gMusic);
     if (gJump != nullptr) Mix_FreeChunk(gJump);
+    SDL_DestroyTexture( helloText );
+    TTF_CloseFont( font );
+    helloText = NULL;
     graphics.quit();
     return 0;
 }
