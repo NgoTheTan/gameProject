@@ -39,8 +39,9 @@ int main(int argc, char* argv[])
     man.leftView.init(manTexture, LEFT_FRAMES, LEFT_CLIPS);
     man.standStill.init(manTexture, STAND_FRAMES, STAND_STILL);
 
-    Mouse mouse;
-    mouse.x=SCREEN_WIDTH/2; mouse.y=SCREEN_HEIGHT/2;
+    Mouse mouse(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+
+    Cheese cheese(100, 100);
 
     bool quit = false;
     SDL_Event event;
@@ -59,28 +60,34 @@ int main(int argc, char* argv[])
         if (currentKeyStates[SDL_SCANCODE_W]){
             mouse.up();
             man.backView.tick();
-            graphics.renderSprite(mouse.x, mouse.y, man.backView);
+            graphics.renderSprite(mouse.rect.x, mouse.rect.y, man.backView);
             man.standStill.currentFrame=3;
         }
         else if (currentKeyStates[SDL_SCANCODE_S]) {
             mouse.down();
             man.frontView.tick();
-            graphics.renderSprite(mouse.x, mouse.y, man.frontView);
+            graphics.renderSprite(mouse.rect.x, mouse.rect.y, man.frontView);
             man.standStill.currentFrame=0;
         }
         else if (currentKeyStates[SDL_SCANCODE_A]) {
             mouse.left();
             man.leftView.tick();
-            graphics.renderSprite(mouse.x, mouse.y, man.leftView);
+            graphics.renderSprite(mouse.rect.x, mouse.rect.y, man.leftView);
             man.standStill.currentFrame=1;
         }
         else if (currentKeyStates[SDL_SCANCODE_D]){
             mouse.right();
             man.rightView.tick();
-            graphics.renderSprite(mouse.x, mouse.y, man.rightView);
+            graphics.renderSprite(mouse.rect.x, mouse.rect.y, man.rightView);
             man.standStill.currentFrame=2;
         }
-        else graphics.renderSprite(mouse.x, mouse.y, man.standStill);
+        else graphics.renderSprite(mouse.rect.x, mouse.rect.y, man.standStill);
+        if (mouse.canEat(cheese)){
+            cheese.eaten=true;
+        }
+        if (!cheese.eaten){
+            render(cheese, graphics);
+        }
         if (currentKeyStates[SDL_SCANCODE_UP]) graphics.playSound(gJump);
         graphics.present();
         SDL_Delay(90);

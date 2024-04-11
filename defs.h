@@ -6,6 +6,9 @@ const int SCREEN_WIDTH = 1536;
 const int SCREEN_HEIGHT = 795;
 
 #define MAN_SPRITE_FILE "assets//image//character.png"
+#define SPRITE_HEIGHT 57
+#define SPRITE_WIDTH 40
+#define CHEESE_SIZE 16
 const int FRONT_CLIPS[][4] = {
     {  0, 0, 64, 64},
     { 64, 0, 64, 64},
