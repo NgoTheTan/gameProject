@@ -1,148 +1,215 @@
 #include <bits/stdc++.h>
+#include <cstring>
+
 using namespace std;
-struct Point
-{
-    float x, y;
-    Point()
-    {
-        x=0; y=0;
-    }
-    Point(float _x, float _y)
-    {
-        x=_x; y=_y;
-    }
-};
 
-void print(Point p)
+char* concat(const char* s1, const char* s2)
 {
-    cout << p.x << " " << p.y << endl;
-}
-Point midPoint(const Point a,const Point b)
-{
-    Point m;
-    m.x=(a.x+b.x)/2;
-    m.y=(a.y+b.y)/2;
-    return m;
+    int len1=strlen(s1), len2=strlen(s2);
+    char* res=new char[len1+len2];
+    strncpy(res, s1, len1);
+    strncpy(res+len1, s2, len2);
+    res[len1+len2]='\0';
+    return res;
 }
 
-struct Rect
+void test()
 {
-    float x, y, w, h;
-    Rect()
-    {
-        x=0; y=0; w=0; h=0;
-    }
-    Rect(float _x, float _y, float _w, float _h)
-    {
-        x=_x; y=_y; w=_w; h=_h;
-    }
-    bool contains(const Point p)
-    {
-        if (p.x>=x && p.y<=y && p.x<=x+w && p.y>=y-h) return true;
-        return false;
-    }
-};
+    int a=100;
+    int *p=&a;
+    delete p;
+    cout << a << endl;
+}
+// bien dia phuong a ngay lap tuc mat di bo nho de luu du lieu va khong in ra duoc gia tri cua a.
 
-struct Ship
+int Strlen(const char* s)
 {
-    Rect board; string id; float dx; float dy;
-    Ship(){}
-    Ship(Rect _board, string _id, float _dx, float _dy)
-    {
-        board=_board; id=_id; dx=_dx; dy=_dy;
+    int len=0;
+    while ((*s)!='\0'){
+        len++;
+        s++;
     }
-    void move()
-    {
-        board.x+=dx; board.y+=dy;
-    }
-};
+    return len;
+}
 
-void display(const Ship &ship)
+void Strncpy(char* dest, const char* source, int len)
 {
-    cout << ship.id << endl << ship.board.x << " " << ship.board.y << endl;
+    while (len--){
+        *dest=*source;
+        dest++; source++;
+    }
 }
-//Cau8: vi tri tuong doi cua mot bien kieu Point va truong x cua no la trung nhau, trong khi truong y nam ben canh ve phia ben phai truong x.
-void passByValue (Point a)
+
+char* Reverse(const char* a)
 {
-    cout << &a << endl;
-    float temp=a.x;
-    a.x=a.y;
-    a.y=temp;
+    int len=Strlen(a);
+    char *res=new char[len+1];
+    a+=(len-1);
+    for (int i=0; i<len; i++){
+        *res=*a;
+        a--; res++;
+    }
+    *res='\0';
+    res=res-len;
+    return res;
 }
-void passByReference(Point &a)
+
+char* delete_char(const char* a, char c)
 {
-    cout << &a << endl;
-    float temp=a.x;
-    a.x=a.y;
-    a.y=temp;
+    int cnt=0;
+    int len=Strlen(a);
+    for (int i=0; i<len; i++){
+        if (*a==c) cnt++;
+        a++;
+    }
+    a-=len;
+    char *res=new char[len-cnt+1];
+    for (int i=0; i<len; i++){
+        if (*a!=c){
+            *res=*a;
+            res++;
+        }
+        a++;
+    }
+    *res='\0';
+    res=res-(len-cnt);
+    return res;
 }
-struct Array
+
+char* pad_right(const char *a, int n)
 {
-   int n;
-   int* arr;
-   Array(int _n) {
-      n = _n;
-      arr = new int[n];
-   }
-};
-// Cau 10: Khi bien struct duoc sao chep co truong du lieu la mang thi phep gan copy nong khong co tac dung gi, cac phan tu trong mang duoc gan khong giong voi mang dung de gan.
-struct String
+    int len=Strlen(a);
+    char *res=new char [n+1];
+    Strncpy(res, a, len);
+    if (len>=n) return res;
+    res+=len;
+    while (len<n){
+        *res='_';
+        res++; len++;
+    }
+    *res='\0';
+    res-=len;
+    return res;
+}
+
+char* pad_left(const char *a, int n)
 {
-    int n;
-    char* str;
-    String(const char* s)
-    {
-        n=strlen(s);
-        str=new char[n];
-        for (int i=0; i<n; i++){
-            str[i]=s[i];
-        }
+    int len=Strlen(a);
+    char *res=new char [n+1];
+    *(res+n)='\0';
+    if (len>=n){
+        Strncpy(res, a, len);
+        return res;
     }
-    ~String()
-    {
-        delete [] str;
+    for (int i=len; i<n; i++){
+        *res='_';
+        res++;
     }
-    void print()
-    {
-        cout << str << endl;
+    Strncpy(res, a, len);
+    res-=(n-len);
+    return res;
+}
+
+char *truncate(const char* a, int n)
+{
+    int len=Strlen(a);
+    char *res=new char[n+1];
+    if (len<=n){
+        Strncpy(res, a, len);
+        return res;
     }
-    void append(const char *sub)
-    {
-        int len=strlen(sub);
-        int total=n+len;
-        char *temp=new char[total];
-        for (int i=0; i<n; i++){
-            temp[i]=str[i];
-        }
-        for (int i=0; i<len; i++){
-            temp[i+n]=sub[i];
-        }
-        delete [] str;
-        str=new char[total];
-        for (int i=0; i<total; i++){
-            str[i]=temp[i];
-        }
-        str[total]='\0';
-        delete [] temp;
+    Strncpy(res, a, n);
+    *(res+n)='\0';
+    return res;
+}
+
+char *trim_right(const char *a)
+{
+    int len=Strlen(a);
+    char *res=new char[len+1];
+    Strncpy(res, a, len);
+    res+=(len-1);
+    while (*res==' '){
+        *res='\0';
+        res--;
+        len--;
     }
-};
+    res-=len;
+    return res;
+}
+
+char* trim_left(const char *a)
+{
+    int len=Strlen(a);
+    int cnt=0;
+    while (*a!='\0'){
+        if (*a!=' ') cnt++;
+        a++;
+    }
+    a-=(len+1);
+    char *res=new char[cnt+1];
+    *(res+cnt)='\0';
+    while (*a!='\0'){
+        if (*a!=' '){
+            *res=*a;
+            res++;
+        }
+        a++;
+    }
+    res-=cnt;
+    return res;
+}
+
 int main()
 {
-    //demo struct Point, Rect va Ship
-//    Point a(1.1,1.8), b(3.3,4.4);
-//    print(midPoint(a,b)); // in ra 2.2 3.3
-//    Rect hcn(1, 2, 3, 4);
-//    if (hcn.contains(a)) cout << "yes" << endl;
-//    else cout << "no" << endl; // in ra yes
-//    if (hcn.contains(b)) cout << "yes" << endl;
-//    else cout << "no" << endl; //in ra no
-//    Ship Tan(hcn, "TAN", 1, 2);
-//    for (int i=0; i<5; i++){
-//        Tan.move();
-//        display(Tan);
-//    }
-    String s("Hello");
-    s.print();
-    s.append(" Tan");
-    s.print();
+//    char s1[]="Hello", s2[]="World";
+//    cout << concat(s1, s2);
+
+
+//    int* p = new int;
+//    int* p2 = p;
+//    *p = 10;
+//    delete p;
+//    *p2 = 100; // loi o dong nay vi ta da xoa vung bo nho cap phat cho p, do do p2 tro thanh con tro vao vung bo nho khong con hieu luc, vi the viec gan gia tri cho *p2 se bi loi.
+//    cout << *p2;
+//    delete p2;
+
+
+//    char* a = new char[10];
+//    char* c = a + 3;
+//    for (int i = 0; i < 9; i++) a[i] = 'a';
+//    a[9] = '\0';
+//    cerr <<"a: " << "-" << a << "-" << endl;
+//    cerr <<"c: " << "-" << c << "-" << endl;
+//    delete c;
+//    cerr << "a after deleting c:" << "-" << a << "-" << endl; // dong cerr cuoi cung nay khong cho ra ket qua nhu y muon. Loi xay ra o day la khi delete c, ta cung da delete
+//    vung bo nho ma a dang tro vao (vi chung ta cho c tro vao vung bo nho cua a+3). Day la loi giai phong bo nho sai cach
+
+// Ham reverse
+//    char s[]="Hello";
+//    cout << Reverse(s) << endl;
+
+// Ham delete_char
+//    char s[]="testinghehe";
+//    cout << delete_char(s, 'e');
+
+// Ham pad_right
+//    char s[]="test";
+//    cout << pad_right(s, 10) << endl;
+//    cout << pad_right(s, 3) << endl;
+
+// Ham pad_left
+    char s[]="test";
+    cout << pad_left(s, 10) << endl;
+    cout << pad_left(s, 4) << endl;
+
+// Ham truncate
+//    char s[]="HelloMyDarling";
+//    cout << truncate(s, 7) << endl;
+//    cout << truncate(s, 14) << endl;
+
+// Ham trim_right(left)
+//    char s[]="     Hello    ";
+//    cout <<"-" << trim_right(s) << "-" << endl;
+//    cout << "-" << trim_left(s) << "-" << endl;
 }
