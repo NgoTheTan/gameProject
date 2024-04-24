@@ -1,58 +1,40 @@
 #include "logic.h"
-#include <bits/stdc++.h>
 
-bool inside(int x, int y, SDL_Rect r) {
-    return x > r.x && x < r.x+r.w && y > r.y && y < r.y+r.h;
-}
-
-bool overlap(const SDL_Rect& r1, const SDL_Rect& r2) {
-    return inside(r1.x, r1.y, r2) || inside(r1.x + r1.w, r1.y, r2) ||
-            inside(r1.x, r1.y+r1.h, r2) || inside(r1.x+r1.w, r1.y+r1.h, r2);
-}
-
-Cheese::Cheese(int x, int y)
+void Character::init(SDL_Texture* texture)
 {
-    rect.x=x;
-    rect.y=y;
-    rect.w=CHEESE_SIZE;
-    rect.h=CHEESE_SIZE;
+    posX=BASE, posY=GROUND;
+    h=CHAR_HEIGHT, w=CHAR_WIDTH;
+    status=RUN;
+    run.init(texture, RUN_FRAMES, RUN_CLIPS);
+    jump.init(texture, JUMP_FRAMES, JUMP_CLIPS);
+    fall.init(texture, FALL_FRAMES, FALL_CLIPS);
 }
-
-Mouse::Mouse(int x, int y)
+bool Character::running()
 {
-    rect.x=x;
-    rect.y=y;
-    rect.h=SPRITE_HEIGHT;
-    rect.w=SPRITE_WIDTH;
+    return posY==GROUND;
 }
-
-bool Mouse::canEat(const Cheese& cheese) {
-        return overlap(rect, cheese.rect);
-}
-
-void Mouse::left()
+bool Character::jumping()
 {
-    rect.x-=move;
+    if (status==JUMP) return true;
+    return false;
 }
-void Mouse::right()
+bool Character::falling()
 {
-    rect.x+=move;
+    if (status==FALL) return true;
+    return false;
 }
-void Mouse::up()
+void Character::Move()
 {
-    rect.y-=move;
+	if (status==JUMP && posY>=MAX_HEIGHT)
+	{
+		posY+=-JUMP_SPEED;
+	}
+	if (posY<=MAX_HEIGHT)
+	{
+		status = FALL;
+	}
+	if (status==FALL && posY<GROUND)
+	{
+		posY += FALL_SPEED;
+	}
 }
-void Mouse::down()
-{
-    rect.y+=move;
-}
-
-void render(const Cheese& cheese, const Graphics& graphics) {
-    SDL_SetRenderDrawColor(graphics.renderer, 255, 255, 0, 255);
-    SDL_RenderFillRect(graphics.renderer, &cheese.rect);
-}
-bool gameOver(const Mouse& mouse) {
-    return mouse.rect.x < 0 || mouse.rect.x+mouse.rect.w >= SCREEN_WIDTH ||
-           mouse.rect.y < 0 || mouse.rect.y+mouse.rect.h >= SCREEN_HEIGHT;
-}
-

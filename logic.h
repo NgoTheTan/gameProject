@@ -1,27 +1,28 @@
 #ifndef _LOGIC__H
 #define _LOGIC__H
-#include "defs.h"
+
 #include "graphics.h"
 
-bool inside(int x, int y, SDL_Rect r);
-bool overlap(const SDL_Rect& r1, const SDL_Rect& r2);
+#define JUMP 1
+#define FALL 2
+#define RUN 0
 
-struct Cheese {
-    SDL_Rect rect;
-    bool eaten=false;
-    Cheese(int x, int y);
+struct Character
+{
+    int posX, posY;
+    int h, w;
+    int status;
+    Sprite run;
+    Sprite jump, fall;
+    Sprite getGun;
+    Sprite runWithGun;
+    Sprite jumpWithGun, fallWithGun;
+    Sprite damaged;
+    void init(SDL_Texture* texture);
+    bool running();
+    bool jumping();
+    bool falling();
+    void Move();
 };
 
-struct Mouse {
-    SDL_Rect rect;
-    int move=STEP;
-    Mouse(int x, int y);
-    bool canEat(const Cheese& cheese);
-    void left();
-    void right();
-    void up();
-    void down();
-};
-void render(const Cheese& cheese, const Graphics& graphics);
-bool gameOver(const Mouse& mouse);
 #endif // _LOGIC__H

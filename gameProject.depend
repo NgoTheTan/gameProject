@@ -4,15 +4,12 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1712847081 source:d:\study\cpp\gameproject\main.cpp
-	<iostream>
-	"defs.h"
-	"graphics.h"
+1713966510 source:d:\study\cpp\gameproject\main.cpp
 	"logic.h"
 
-1712848272 d:\study\cpp\gameproject\defs.h
+1713969157 d:\study\cpp\gameproject\defs.h
 
-1712764161 d:\study\cpp\gameproject\graphics.h
+1713964831 d:\study\cpp\gameproject\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -20,15 +17,13 @@
 	"defs.h"
 	<bits/stdc++.h>
 
-1712764161 source:d:\study\cpp\gameproject\graphics.cpp
+1713964831 source:d:\study\cpp\gameproject\graphics.cpp
 	<bits/stdc++.h>
 	"graphics.h"
 
-1712846526 d:\study\cpp\gameproject\logic.h
-	"defs.h"
+1713756635 d:\study\cpp\gameproject\logic.h
 	"graphics.h"
 
-1712847828 source:d:\study\cpp\gameproject\logic.cpp
+1713796824 source:d:\study\cpp\gameproject\logic.cpp
 	"logic.h"
-	<bits/stdc++.h>
 

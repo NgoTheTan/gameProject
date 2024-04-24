@@ -14,26 +14,29 @@ struct Sprite
     SDL_Texture* texture;
     vector<SDL_Rect> clips;
     int currentFrame = 0;
-
     void init(SDL_Texture* _texture, int frames, const int _clips [][4]);
     void tick();
     const SDL_Rect* getCurrentClip() const;
 };
 
-struct Character
-{
-    Sprite backView, frontView, leftView, rightView, standStill;
-};
-
-struct ScrollingBackground
+struct Layer
 {
     SDL_Texture *texture;
-    int scrollingOffset=0;
+    float scrollingOffset=0;
     int width, height;
     void setTexture(SDL_Texture *_texture);
-    void moveForward();
-    void goBack();
+    void scroll(const float speed, const float accel);
 };
+
+struct ParallaxBackground
+{
+    Layer ground;
+    Layer layer_1;
+    Layer layer_2;
+    Layer layer_3;
+    Layer layer_4;
+};
+
 struct Graphics
 {
     SDL_Window *window;
@@ -47,17 +50,19 @@ struct Graphics
 
     void prepareScene();
 
-    void createBackground(SDL_Texture* background);
+    SDL_Texture* loadTexture(const char *filename);
 
-    void renderBackground(const ScrollingBackground &background);
+    void renderTexture(SDL_Texture* texture, int x, int y);
+
+    void initBackground(ParallaxBackground &background);
+
+    void renderLayer(const Layer &layer);
+
+    void renderBackground(ParallaxBackground &background, const float accel);
 
     void renderSprite(int x, int y, const Sprite& sprite);
 
     void present();
-
-    SDL_Texture* loadTexture(const char *filename);
-
-    void renderTexture(SDL_Texture* texture, int x, int y);
 
     Mix_Music *loadMusic(const char* path);
 
@@ -74,5 +79,5 @@ struct Graphics
     void quit();
 };
 
-
+void destroyBackground(ParallaxBackground &background);
 #endif // _GRAPHICS__H
