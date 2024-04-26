@@ -16,16 +16,16 @@ struct Sprite
     int currentFrame = 0;
     void init(SDL_Texture* _texture, int frames, const int _clips [][4]);
     void tick();
-    const SDL_Rect* getCurrentClip() const;
+    SDL_Rect* getCurrentClip();
 };
 
 struct Layer
 {
     SDL_Texture *texture;
-    float scrollingOffset=0;
+    int scrollingOffset=0;
     int width, height;
     void setTexture(SDL_Texture *_texture);
-    void scroll(const float speed, const float accel);
+    void scroll(const int speed, const int accel);
 };
 
 struct ParallaxBackground
@@ -58,9 +58,9 @@ struct Graphics
 
     void renderLayer(const Layer &layer);
 
-    void renderBackground(ParallaxBackground &background, const float accel);
+    void renderBackground(ParallaxBackground &background, const int accel);
 
-    void renderSprite(int x, int y, const Sprite& sprite);
+    void renderSprite(int x, int y, Sprite& sprite);
 
     void present();
 

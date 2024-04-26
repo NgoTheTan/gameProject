@@ -13,9 +13,10 @@ void Sprite::init(SDL_Texture* _texture, int frames, const int _clips [][4]){
 }
 void Sprite::tick(){
     currentFrame++;
+    if (currentFrame==clips.size()*FRAME_RATE-FRAME_LOST) currentFrame++;
     if ((currentFrame/FRAME_RATE)>=clips.size()) currentFrame=0;
 }
-const SDL_Rect* Sprite::getCurrentClip() const {
+SDL_Rect* Sprite::getCurrentClip(){
         return &(clips[currentFrame/FRAME_RATE]);
 }
 
@@ -24,7 +25,7 @@ void Layer::setTexture(SDL_Texture *_texture)
     texture=_texture;
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 }
-void Layer::scroll(const float speed, const float accel)
+void Layer::scroll(const int speed, const int accel)
 {
     scrollingOffset-=(speed+accel);
     if (scrollingOffset<0) scrollingOffset=width;
@@ -82,7 +83,7 @@ void Graphics::initBackground(ParallaxBackground& background)
     background.ground.setTexture(loadTexture(GROUND_FILE));
 }
 
-void Graphics::renderBackground(ParallaxBackground& background, const float accel)
+void Graphics::renderBackground(ParallaxBackground& background, const int accel)
 {
     background.layer_1.scroll(LAYER_1_SPEED, BASE_SPEED);
     renderLayer(background.layer_1);
@@ -95,8 +96,8 @@ void Graphics::renderBackground(ParallaxBackground& background, const float acce
     background.ground.scroll(GROUND_SPEED, accel);
     renderLayer(background.ground);
 }
-void Graphics::renderSprite(int x, int y, const Sprite& sprite){
-    const SDL_Rect* clip = sprite.getCurrentClip();
+void Graphics::renderSprite(int x, int y, Sprite& sprite){
+    SDL_Rect* clip = sprite.getCurrentClip();
     SDL_Rect renderQuad = {x, y, clip->w, clip->h};
     SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
 }

@@ -12,34 +12,51 @@ const int SCREEN_HEIGHT = 540;
 
 #define BERIE_FILE "assets//image//berie.png"
 
+#define CASTLES_FILE "assets//image//castle.png"
+#define BIRD_FILE "assets//image//pigeon.png"
+#define CRAB_FILE "assets//image//crab.png"
+
 #define SPPED_INCREASEMENT 2
 #define SCORE_INCREASEMENT 1
 #define FRAME_INCREASEMENT 1
 
-const float BASE_SPEED=0;
-const float GROUND_SPEED=5.0;
-const float LAYER_1_SPEED=0;
-const float LAYER_2_SPEED=1.0;
-const float LAYER_3_SPEED=1.5;
-const float LAYER_4_SPEED=2.0;
-const float LEVEL[]={0.0,1.5,3.0,4.5,6.0,8.0};
+const int BASE_SPEED=0;
+const int GROUND_SPEED=8;
+const int LAYER_1_SPEED=0;
+const int LAYER_2_SPEED=1;
+const int LAYER_3_SPEED=2;
+const int LAYER_4_SPEED=3;
+const int TIME_UP=1000;
+const int MAX_LEVEL=5;
+const int LEVEL[]={0,2,4,7,11,15};
 
 const int GROUND=415;
 const int MAX_HEIGHT=175;
 const int BASE=80;
-const int CHAR_HEIGHT=76;
-const int CHAR_WIDTH=65;
-const int JUMP_SPEED=6;
-const int FALL_SPEED=6;
+const int JUMP_SPEED=8;
+const int FALL_SPEED=8;
+const int MIN_HEIGHT=250;
+const int BIRD_POS_RANGE=250;
+const int CASTLE_POS_RANGE=250;
+const int CRAB_POS_RANGE=100;
 
-const int FPS=40;
+const int FPS=50;
 const int FRAME_DELAY=1000/FPS;
 const int FRAME_RATE=5;
+const int FRAME_LOST=2;
 const int RUN_CLIPS[][4]={{95,0,65,76},{190, 0, 65, 76},{285,0,65,76},{384,0,65,76},{480,0,65,76},{577,0,65,76}};
-const int JUMP_CLIPS[][4]={{673,0,65,76},{767,0,65,76},{767,0,65,76},{865,0,65,76},{865,0,65,76},{865,0,65,76},{961,0,65,76},{961,0,65,76}};
-const int FALL_CLIPS[][4]={{1055,0,65,76},{1055,0,65,76},{1152,0,65,76},{1152,0,65,76},{1152,0,65,76},{1152,0,65,76},{1242,0,65,76},{1343,0,65,76}};
+const int JUMP_CLIPS[][4]={{673,0,65,76},{767,0,65,76},{865,0,65,76},{865,0,65,76},{865,0,65,76},{961,0,65,76}};
+const int FALL_CLIPS[][4]={{1055,0,65,76},{1152,0,65,76},{1055,0,65,76},{1152,0,65,76},{1242,0,65,76},{1343,0,65,76}};
+
+const int BIRD_CLIPS[][4]={{0,0,32,32},{32,0,32,32},{96,0,32,32},{160,0,32,32},{192,0,32,32}};
+const int CASTLE_TYPES[][4]={{1,75,68,75},{74,43,120,107},{198,0,68,150},{273,43,169,107},{447,0,120,150}};
+const int CRAB_CLIPS[][4]={{13,109,37,19},{137,109,42,19},{203,109,39,19}};
 
 const int RUN_FRAMES=sizeof(RUN_CLIPS)/sizeof(int)/4;
 const int JUMP_FRAMES=sizeof(JUMP_CLIPS)/sizeof(int)/4;
 const int FALL_FRAMES=sizeof(FALL_CLIPS)/sizeof(int)/4;
+
+const int BIRD_FRAMES=sizeof(BIRD_CLIPS)/sizeof(int)/4;
+const int CRAB_FRAMES=sizeof(CRAB_CLIPS)/sizeof(int)/4;
+const int CASTLES=sizeof(CASTLE_TYPES)/sizeof(int)/4;
 #endif // _DEFS__H
