@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
     Uint32 frameStart;
     int frameTime;
     srand(time(0));
-    int time=0, level=0;
+    int time=0, level=0, speedUp=0, types=BASE_TYPES;
 
     Graphics graphics;
     graphics.initSDL();
@@ -31,6 +31,8 @@ int main(int argc, char* argv[])
     Obstacle bird(birdTexture, BIRD);
     SDL_Texture* crabTexture=graphics.loadTexture(CRAB_FILE);
     Obstacle crab(crabTexture, CRAB);
+    SDL_Texture* castleTexture=graphics.loadTexture(CASTLES_FILE);
+    Obstacle castle(castleTexture, CASTLE);
 
     bool quit=false;
     SDL_Event event;
@@ -45,39 +47,56 @@ int main(int argc, char* argv[])
 
         const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-        if (currentKeyStates[SDL_SCANCODE_SPACE] && berie.running()){
+        if (currentKeyStates[SDL_SCANCODE_SPACE] && berie.running() && !berie.damaged()){
             berie.status=JUMP;
         }
-        berie.Move();
         SDL_Rect* currentClip_Character = nullptr;
-        graphics.renderBackground(background, LEVEL[level]);
-
+        graphics.renderBackground(background, speedUp);
+        if(!berie.damaged()) berie.Move();
         if (berie.running()){
             berie.run.tick();
             currentClip_Character=berie.run.getCurrentClip();
             graphics.renderSprite(berie.posX, berie.posY, berie.run);
         }
         else if (berie.jumping()){
-            berie.jump.tick();
-            currentClip_Character=berie.jump.getCurrentClip();
-            graphics.renderSprite(berie.posX, berie.posY, berie.jump);
+        berie.jump.tick();
+        currentClip_Character=berie.jump.getCurrentClip();
+        graphics.renderSprite(berie.posX, berie.posY, berie.jump);
         }
         else if (berie.falling()){
             berie.fall.tick();
             currentClip_Character=berie.fall.getCurrentClip();
             graphics.renderSprite(berie.posX, berie.posY, berie.fall);
         }
-        bird.Move(LEVEL[level]);
-        bird.foe.tick();
-        graphics.renderSprite(bird.posX, bird.posY, bird.foe);
-        crab.Move(LEVEL[level]);
-        crab.foe.tick();
-        graphics.renderSprite(crab.posX, crab.posY, crab.foe);
+        if (level>=0){
+            castle.Move(speedUp, types);
+            graphics.renderSprite(castle.posX, castle.posY, castle.foe);
+            bird.Move(speedUp, types);
+            bird.foe.tick();
+            graphics.renderSprite(bird.posX, bird.posY, bird.foe);
+        }
+        if (level>=2){
+            crab.Move(speedUp,types);
+            crab.foe.tick();
+            graphics.renderSprite(crab.posX, crab.posY, crab.foe);
+        }
         if (checkEnemyCollision(berie, currentClip_Character, bird, bird.foe.getCurrentClip())){
-            quit=true;
+            berie.status=DEAD;
         }
         if (checkEnemyCollision(berie, currentClip_Character, crab, crab.foe.getCurrentClip())){
-            quit=true;
+                berie.status=DEAD;
+            }
+            if (checkEnemyCollision(berie, currentClip_Character, castle, castle.foe.getCurrentClip())){
+                berie.status=DEAD;
+            }
+        if (berie.damaged()){
+            berie.playDead();
+            berie.dead.tick();
+            graphics.renderSprite(berie.posX, berie.posY, berie.dead);
+            if (berie.dead.currentFrame==DEAD_FRAMES*FRAME_RATE-1) {
+                SDL_Delay(1000);
+                quit=true;
+            }
         }
         graphics.present();
         frameTime=SDL_GetTicks()-frameStart;
@@ -86,6 +105,10 @@ int main(int argc, char* argv[])
         if (time>TIME_UP){
             time=0;
             if (level<MAX_LEVEL) level++;
+            if (types<MAX_TYPE) types++;
+        }
+        if (time%(TIME_UP/ACCEL_PACE)==0 && time!=0){
+            speedUp++;
         }
     }
     destroyBackground(background);

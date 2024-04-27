@@ -25,12 +25,14 @@ struct Character
     Sprite getGun;
     Sprite runWithGun;
     Sprite jumpWithGun, fallWithGun;
-    Sprite damaged;
+    Sprite dead;
     Character(SDL_Texture* texture);
     bool running();
     bool jumping();
     bool falling();
+    bool damaged();
     void Move();
+    void playDead();
 };
 
 struct Obstacle
@@ -39,7 +41,7 @@ struct Obstacle
     int type;
     Sprite foe;
     Obstacle(SDL_Texture* texture, int _type);
-    void Move(int accel);
+    void Move(int accel, int types);
 };
 
 bool checkCollision(int leftA, int rightA, int topA, int botA, int leftB, int rightB, int topB, int botB);
