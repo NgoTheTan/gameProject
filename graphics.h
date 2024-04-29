@@ -16,7 +16,7 @@ struct Sprite
     int currentFrame = 0;
     void init(SDL_Texture* _texture, int frames, const int _clips [][4]);
     void tick();
-    SDL_Rect* getCurrentClip();
+    const SDL_Rect* getCurrentClip() const;
 };
 
 struct Layer
@@ -60,7 +60,7 @@ struct Graphics
 
     void renderBackground(ParallaxBackground &background, const int accel);
 
-    void renderSprite(int x, int y, Sprite& sprite);
+    void renderSprite(int x, int y, const Sprite& sprite);
 
     void present();
 

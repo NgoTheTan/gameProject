@@ -12,9 +12,14 @@ const int SCREEN_HEIGHT = 540;
 
 #define BERIE_FILE "assets//image//berie.png"
 
+#define BALL_FILE "assets//image//water.png"
+#define SHOOT_FILE "assets//image//shooting.png"
+#define SPLASH_FILE "assets//image//hit.png"
+
 #define CASTLES_FILE "assets//image//castles.png"
 #define BIRD_FILE "assets//image//bird.png"
 #define CRAB_FILE "assets//image//crab.png"
+#define VANISH_FILE "assets//image//smoke.png"
 
 #define SPPED_INCREASEMENT 2
 #define SCORE_INCREASEMENT 1
@@ -26,10 +31,17 @@ const int LAYER_1_SPEED=0;
 const int LAYER_2_SPEED=1;
 const int LAYER_3_SPEED=2;
 const int LAYER_4_SPEED=3;
-const int TIME_UP=800;
-const int MAX_LEVEL=5;
-const int ACCEL_PACE=2;
+const int TIME_UP=1000;
+const int MAX_LEVEL=10;
 const int SPEED_ACCEL=1;
+
+const int BASE_ENERGY=585;
+const int ENERGY_LOST=15;
+const int ENERGY_GAIN=5;
+const int MAX_POWER=4000;
+const int POWER_GAIN=500;
+const int POWER_LOST=5;
+const int BULLET_SPEED=10;
 
 const int GROUND=415;
 const int MAX_HEIGHT=175;
@@ -40,9 +52,11 @@ const int DEAD_SPEED=2;
 const int MIN_HEIGHT=200;
 const int CHAR_HEIGHT=76;
 const int CHAR_WIDTH=65;
-const int BIRD_POS_RANGE=250;
+
+const int COLLECT_POS_RANGE=100;
+const int BIRD_POS_RANGE=300;
 const int CASTLE_POS_RANGE=0;
-const int CRAB_POS_RANGE=250;
+const int CRAB_POS_RANGE=200;
 const int BASE_TYPES=2;
 const int MAX_TYPE=5;
 
@@ -54,17 +68,34 @@ const int RUN_CLIPS[][4]={{95,0,65,76},{190, 0, 65, 76},{285,0,65,76},{383,0,65,
 const int JUMP_CLIPS[][4]={{672,0,65,76},{767,0,65,76},{864,0,65,76},{864,0,65,76},{864,0,65,76},{960,0,65,76}};
 const int FALL_CLIPS[][4]={{1054,0,65,76},{1054,0,65,76},{1151,0,65,76},{1151,0,65,76},{1241,0,65,76},{1342,0,65,76}};
 const int DEAD_CLIPS[][4]={{1440,0,65,76},{1530,0,65,76},{1631,0,65,76},{1727,0,65,76},{1828,0,65,76},{1913,0,80,76}};
+const int HEADBUTT_CLIPS[][4]={{2114,0,65,76},{2200,0,65,76},{2320,0,65,76},{2320,0,65,76},{2399,0,65,76},{2399,0,65,76},{2399,0,65,76},{2494,0,65,76}};
+const int GETGUN_CLIPS[][4]={{2590,0,70,76}};
+const int RUN_W_GUN_CLIPS[][4]={{2690,0,65,76},{2786,0,65,76},{2882,0,65,76},{2978,0,65,76},{3074,0,65,76},{3170,0,65,76}};
+const int JUMP_W_GUN_CLIPS[][4]={{3266,0,70,76},{3360,0,70,76},{3455,0,70,76},{3455,0,70,76},{3455,0,70,76},{3551,0,70,76}};
+const int FALL_W_GUN_CLIPS[][4]={{3647,0,70,76},{3647,0,70,76},{3743,0,70,76},{3743,0,70,76},{3838,0,70,76},{3935,0,70,76}};
+const int CTRASH_PIXELS=15;
 
+const int SHOOT_CLIPS[][4]={{129,131,53,21},{191,131,53,21},{255,131,53,21},{0,231,53,21},{63,231,53,21},{128,227,53,21},{191,231,53,21}};
+const int SPLASH_CLIPS[][4]={{139,15,41,65},{11,111,41,65},{139,111,41,65},{67,223,41,65},{184,223,41,65}};
+const int BALL_CLIPS[][4]={{15,35,32,32},{79,35,32,32},{148,35,32,32},{15,131,32,32},{79,131,32,32},{148,131,32,32}};
 const int BIRD_CLIPS[][4]={{197,0,61,49},{130,0,62,49},{67,0,60,49},{3,0,62,49}};
 const int CASTLE_TYPES[][4]={{1,75,70,75},{74,43,120,107},{198,0,70,150},{273,43,169,107},{447,0,120,150}};
 const int CRAB_CLIPS[][4]={{13,109,37,19},{137,109,42,19},{203,109,39,19}};
+const int VANISH_CLIPS[][4]={{21,152,85,80},{143,152,85,80},{275,152,85,80},{21,280,85,80},{143,280,85,80}};
+const int OBS_TRASH_PIXELS=5;
 
 const int RUN_FRAMES=sizeof(RUN_CLIPS)/sizeof(int)/4;
 const int JUMP_FRAMES=sizeof(JUMP_CLIPS)/sizeof(int)/4;
 const int FALL_FRAMES=sizeof(FALL_CLIPS)/sizeof(int)/4;
 const int DEAD_FRAMES=sizeof(DEAD_CLIPS)/sizeof(int)/4;
+const int HEADBUTT_FRAMES=sizeof(HEADBUTT_CLIPS)/sizeof(int)/4;
+const int GETGUN_FRAMES=sizeof(GETGUN_CLIPS)/sizeof(int)/4;
 
+const int SPLASH_FRAMES=sizeof(SPLASH_CLIPS)/sizeof(int)/4;
+const int SHOOT_FRAMES=sizeof(SHOOT_CLIPS)/sizeof(int)/4;
+const int BALL_FRAMES=sizeof(BALL_CLIPS)/sizeof(int)/4;
 const int BIRD_FRAMES=sizeof(BIRD_CLIPS)/sizeof(int)/4;
 const int CRAB_FRAMES=sizeof(CRAB_CLIPS)/sizeof(int)/4;
 const int CASTLES=sizeof(CASTLE_TYPES)/sizeof(int)/4;
+const int VANISH_FRAMES=sizeof(VANISH_CLIPS)/sizeof(int)/4;
 #endif // _DEFS__H

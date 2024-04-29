@@ -16,7 +16,7 @@ void Sprite::tick(){
     if (currentFrame==clips.size()*FRAME_RATE-FRAME_LOST) currentFrame++;
     if ((currentFrame/FRAME_RATE)>=clips.size()) currentFrame=0;
 }
-SDL_Rect* Sprite::getCurrentClip(){
+const SDL_Rect* Sprite::getCurrentClip() const{
         return &(clips[currentFrame/FRAME_RATE]);
 }
 
@@ -96,8 +96,8 @@ void Graphics::renderBackground(ParallaxBackground& background, const int accel)
     background.ground.scroll(GROUND_SPEED, accel);
     renderLayer(background.ground);
 }
-void Graphics::renderSprite(int x, int y, Sprite& sprite){
-    SDL_Rect* clip = sprite.getCurrentClip();
+void Graphics::renderSprite(int x, int y, const Sprite& sprite){
+    const SDL_Rect* clip = sprite.getCurrentClip();
     SDL_Rect renderQuad = {x, y, clip->w, clip->h};
     SDL_RenderCopy(renderer, sprite.texture, clip, &renderQuad);
 }
@@ -187,10 +187,3 @@ void Graphics::quit()
     SDL_Quit();
 }
 
-void destroyBackground(ParallaxBackground &background)
-{
-    SDL_DestroyTexture(background.layer_1.texture); background.layer_1.texture=NULL;
-    SDL_DestroyTexture(background.layer_2.texture); background.layer_2.texture=NULL;
-    SDL_DestroyTexture(background.layer_3.texture); background.layer_3.texture=NULL;
-    SDL_DestroyTexture(background.layer_4.texture); background.layer_4.texture=NULL;
-}
