@@ -15,6 +15,7 @@
 #define BIRD 1
 #define CASTLE 0
 
+
 struct Character
 {
     int posX, posY;
@@ -65,14 +66,51 @@ struct Bullet
     void delay(const int accel);
 };
 
+struct Sound
+{
+    Mix_Music *gMusic;
+    Mix_Music *mMusic;
+    Mix_Chunk *gJump;
+    Mix_Chunk *gCollect;
+    Mix_Chunk *gAttack;
+    Mix_Chunk *waterSplash;
+    Mix_Chunk *shootWater;
+    Mix_Chunk *birdSound;
+    Mix_Chunk *deadSound;
+    Mix_Chunk *yaySound;
+    Mix_Chunk *clickSound;
+    Mix_Chunk *hoverSound;
+    Sound(Graphics& graphics);
+};
+struct Text
+{
+    TTF_Font* font;
+    SDL_Color color={0,0,0,255};
+    SDL_Texture* yourScoreText;
+    SDL_Texture* highText;
+    SDL_Texture* scoreText;
+    SDL_Texture* highScoreText;
+    Text(Graphics &graphics);
+    void renderScore(Graphics &graphics, const int score, const int highScore);
+};
+//struct Button
+//{
+//    int state;
+//    SDL_Texture* buttonTexture;
+//    int posX, posY, texX, texY;
+//    Button(Graphics &graphics, int _posX, int _posY);
+//    bool inside(SDL_Event *event, const int buttonSize);
+//};
+
+string getHighScore(const string path);
+void updateHighScore(const string path, const int score, const string high);
+
 bool checkCollision(int leftA, int rightA, int topA, int botA, int leftB, int rightB, int topB, int botB);
 bool checkHitObstacle(const Bullet* bullet,const SDL_Rect* bullet_clip, const Obstacle obstacle, const SDL_Rect* obstacle_clip);
-void shooting(vector<Bullet*> &bullets, Graphics &graphics, Obstacle& castle, Obstacle& bird, const int accel);
+void shooting(vector<Bullet*> &bullets, Graphics &graphics, Obstacle& castle, Obstacle& bird, const int accel, int& score, Sound& sound, const int level);
 
 
 bool checkObstacleCollision(const Character character, const Obstacle obstacle, const SDL_Rect* obstacle_clip);
 void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle& water);
-void destroyBackground(ParallaxBackground& background);
-void destroyChar(Character& character);
-void destroyObs(Obstacle& castle, Obstacle& bird, Obstacle& crab, Obstacle& water);
+
 #endif // _LOGIC__H

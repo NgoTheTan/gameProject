@@ -4,7 +4,7 @@ Character::Character(SDL_Texture* texture)
 {
     posX=BASE, posY=GROUND;
     status=RUN;
-    reload=100;
+    reload=150;
     gun=false;
     energy=BASE_ENERGY; power=0;
     run.init(texture, RUN_FRAMES, RUN_CLIPS);
@@ -73,7 +73,7 @@ void Character::Move()
             fall.currentFrame=fallWithGun.currentFrame;
         }
 	}
-	if (reload<100) reload+=10;
+	if (reload<150) reload+=10;
 }
 void Character::playDead()
 {
@@ -104,6 +104,7 @@ Obstacle::Obstacle(SDL_Texture* enemy, SDL_Texture* effect, int _type)
     }
     else if (type==CRAB){
         foe.init(enemy, CRAB_FRAMES, CRAB_CLIPS);
+        posY=GROUND+(CHAR_HEIGHT-foe.getCurrentClip()->h);
     }
     else if (type==CASTLE){
         foe.init(enemy, CASTLES, CASTLE_TYPES);
@@ -147,7 +148,7 @@ void Obstacle::spawn(const int accel)
 Bullet::Bullet(SDL_Texture* bullet, SDL_Texture* effect, int height)
 {
     hit=false; render=true;
-    posX=BASE+CHAR_WIDTH-15; posY=height;
+    posX=BASE+10; posY=height;
     splash.init(effect, SPLASH_FRAMES, SPLASH_CLIPS);
     shoot.init(bullet, SHOOT_FRAMES, SHOOT_CLIPS);
 }
@@ -165,17 +166,101 @@ Bullet::~Bullet()
     SDL_DestroyTexture(splash.texture); splash.texture=NULL;
     SDL_DestroyTexture(shoot.texture); shoot.texture=NULL;
 }
-void shooting(vector<Bullet*> &bullets, Graphics& graphics, Obstacle &castle, Obstacle& bird, const int accel)
+
+Sound::Sound(Graphics& graphics)
+{
+    gMusic=graphics.loadMusic(GAME_MUSIC);
+    mMusic=graphics.loadMusic(MENU_MUSIC);
+
+    clickSound=graphics.loadSound(CLICK_SOUND);
+    hoverSound=graphics.loadSound(HOVER_SOUND);
+    gJump=graphics.loadSound(JUMP_SOUND);
+    gCollect=graphics.loadSound(COLLECT_SOUND);
+    gAttack=graphics.loadSound(ATTACK_SOUND);
+    waterSplash=graphics.loadSound(SPLASH_SOUND);
+    shootWater=graphics.loadSound(SHOOT_SOUND);
+    birdSound=graphics.loadSound(BIRD_SOUND);
+    deadSound=graphics.loadSound(DEAD_SOUND);
+    yaySound=graphics.loadSound(YAY_SOUND);
+}
+Text::Text(Graphics &graphics)
+{
+    font=graphics.loadFont(FONT,48);
+    yourScoreText=graphics.renderText("YOUR SCORE ", font, color);
+    highText=graphics.renderText("HIGH SCORE ", font, color);
+}
+void Text::renderScore(Graphics &graphics, const int score, const int highScore)
+{
+    scoreText=graphics.renderText(to_string(score), font, color);
+    highScoreText=graphics.renderText(to_string(highScore), font, color);
+}
+//Button::Button(Graphics &graphics, int _posX, int _posY)
+//{
+//    state=IDLE;
+//    posX=_posX; posY=_posY;
+//    buttonTexture=graphics.loadTexture(BUTTON_FILE);
+//}
+//bool Button::inside(SDL_Event* event, const int buttonSize)
+//{
+//    if (event->type==SDL_MOUSEMOTION || event->type==SDL_MOUSEBUTTONDOWN || event->type==SDL_MOUSEBUTTONUP){
+//        int x, y;
+//        int button_h=BUTTON_H, button_w;
+//        if (buttonSize==SMALL_BUTTON){
+//            button_w=SMALL_BUTTON_W;
+//        }
+//        else if (buttonSize==MED_BUTTON){
+//            button_w=MED_BUTTON_W;
+//        }
+//        else{
+//            button_w=BIG_BUTTON_W;
+//        }
+//        SDL_GetMouseState(&x, &y);
+//        bool in=true;
+//        if (x<posX) in=false;
+//        else if (x>posX+button_w) in=false;
+//        else if (y<posY) in=false;
+//        else if (y>posY+button_h) in=false;
+//        return in;
+//    }
+//    return false;
+//}
+string getHighScore(const string path)
+{
+    fstream highScoreFile(path);
+    string highScore;
+    highScoreFile >> highScore;
+    return highScore;
+}
+void updateHighScore(const string path, const int score, const string high)
+{
+    fstream highScoreFile;
+    highScoreFile.open(path, ios::out);
+    stringstream convertToInt(high);
+    int oldHighScore=0;
+    convertToInt >> oldHighScore;
+    string newHighScore;
+    if (score>oldHighScore){
+        oldHighScore=score;
+    }
+    newHighScore=to_string(oldHighScore);
+    highScoreFile << newHighScore;
+}
+void shooting(vector<Bullet*> &bullets, Graphics& graphics, Obstacle &castle, Obstacle& bird, const int accel, int& score, Sound &sound, const int level)
 {
     for (int i=0; i<bullets.size(); i++){
-        Bullet* bullet=bullets[i];cerr << bullet->posX << endl;
+        Bullet* bullet=bullets[i];
         if (checkHitObstacle(bullet, bullet->shoot.getCurrentClip(), castle, castle.foe.getCurrentClip()) && !castle.dead && !bullet->hit){
+            score+=(20+level*SCORE_MULTIPLIER);
             bullet->hit=true;
             castle.dead=true;
+            graphics.playSound(sound.waterSplash);
         }
         if (checkHitObstacle(bullet,bullet->shoot.getCurrentClip(), bird, bird.foe.getCurrentClip()) && !bird.dead && !bullet->hit){
+            score+=(50+level*SCORE_MULTIPLIER);
             bullet->hit=true;
             bird.dead=true;
+            graphics.playSound(sound.birdSound);
+            graphics.playSound(sound.waterSplash);
         }
         if (!bullet->hit){
             bullet->Move();
@@ -238,33 +323,5 @@ void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &wa
     else if ((leftD>=leftB && rightD<=rightB) || (leftD<=rightB && rightD>=rightB)) water.posX+=bird.foe.getCurrentClip()->w;
 }
 
-void destroyBackground(ParallaxBackground& background)
-{
-    SDL_DestroyTexture(background.layer_1.texture); background.layer_1.texture=NULL;
-    SDL_DestroyTexture(background.layer_2.texture); background.layer_2.texture=NULL;
-    SDL_DestroyTexture(background.layer_3.texture); background.layer_3.texture=NULL;
-    SDL_DestroyTexture(background.layer_4.texture); background.layer_4.texture=NULL;
-}
-void destroyChar(Character& character)
-{
-    SDL_DestroyTexture(character.run.texture); character.run.texture=NULL;
-    SDL_DestroyTexture(character.jump.texture); character.jump.texture=NULL;
-    SDL_DestroyTexture(character.fall.texture); character.fall.texture=NULL;
-    SDL_DestroyTexture(character.headbutt.texture); character.headbutt.texture=NULL;
-    SDL_DestroyTexture(character.dead.texture); character.dead.texture=NULL;
-    SDL_DestroyTexture(character.runWithGun.texture); character.runWithGun.texture=NULL;
-    SDL_DestroyTexture(character.jumpWithGun.texture); character.jumpWithGun.texture=NULL;
-    SDL_DestroyTexture(character.fallWithGun.texture); character.fallWithGun.texture=NULL;
-}
-void destroyObs(Obstacle& castle, Obstacle& bird, Obstacle& crab, Obstacle& water)
-{
-    SDL_DestroyTexture(castle.foe.texture); castle.foe.texture=NULL;
-    SDL_DestroyTexture(castle.vanish.texture); castle.vanish.texture=NULL;
-    SDL_DestroyTexture(bird.foe.texture); bird.foe.texture=NULL;
-    SDL_DestroyTexture(bird.vanish.texture); bird.vanish.texture=NULL;
-    SDL_DestroyTexture(crab.foe.texture); crab.foe.texture=NULL;
-    SDL_DestroyTexture(crab.vanish.texture); crab.vanish.texture=NULL;
 
-    SDL_DestroyTexture(water.collect.texture); water.collect.texture=NULL;
-}
 

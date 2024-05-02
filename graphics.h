@@ -62,6 +62,8 @@ struct Graphics
 
     void renderSprite(int x, int y, const Sprite& sprite);
 
+    void renderUI(SDL_Texture* texture, int x, int y, int texX, int texY, int w, int h);
+
     void present();
 
     Mix_Music *loadMusic(const char* path);
@@ -74,7 +76,7 @@ struct Graphics
 
     TTF_Font* loadFont(const char* path, int size);
 
-    SDL_Texture* renderText(const char* text, TTF_Font* font, SDL_Color textColor);
+    SDL_Texture* renderText(const string text, TTF_Font* font, SDL_Color textColor);
 
     void quit();
 };

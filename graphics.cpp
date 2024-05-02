@@ -116,7 +116,12 @@ void Graphics::renderTexture(SDL_Texture* texture, int x, int y)
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
     SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
-
+void Graphics::renderUI(SDL_Texture* texture, int x, int y, int texX, int texY, int w, int h)
+{
+    SDL_Rect dest={x,y,w,h};
+    SDL_Rect src={texX, texY, w, h};
+    SDL_RenderCopy(renderer, texture, &src, &dest);
+}
 Mix_Music* Graphics::loadMusic(const char* path)
 {
     Mix_Music *gMusic = Mix_LoadMUS(path);
@@ -162,9 +167,10 @@ TTF_Font* Graphics::loadFont(const char* path, int size)
     return gFont;
 }
 
-SDL_Texture* Graphics::renderText(const char* text, TTF_Font* font, SDL_Color textColor)
+SDL_Texture* Graphics::renderText(const string text, TTF_Font* font, SDL_Color textColor)
 {
-    SDL_Surface* textSurface = TTF_RenderText_Solid( font, text, textColor );
+    const char* pText=&text[0];
+    SDL_Surface* textSurface = TTF_RenderText_Solid( font, pText, textColor );
     if( textSurface == nullptr ){
         SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Render text surface %s", TTF_GetError());
         return nullptr;
