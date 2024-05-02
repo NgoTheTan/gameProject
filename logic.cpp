@@ -17,6 +17,23 @@ Character::Character(SDL_Texture* texture)
     jumpWithGun.init(texture, JUMP_FRAMES, JUMP_W_GUN_CLIPS);
     fallWithGun.init(texture, FALL_FRAMES, FALL_W_GUN_CLIPS);
 }
+void Character::revive()
+{
+    posX=BASE, posY=GROUND;
+    status=RUN;
+    reload=150;
+    gun=false;
+    energy=BASE_ENERGY; power=0;
+    run.currentFrame=0;
+    jump.currentFrame=0;
+    fall.currentFrame=0;
+    dead.currentFrame=0;
+    headbutt.currentFrame=0;
+    getGun.currentFrame=0;
+    runWithGun.currentFrame=0;
+    jumpWithGun.currentFrame=0;
+    fallWithGun.currentFrame=0;
+}
 bool Character::running()
 {
     if(status==RUN) return true;
@@ -173,7 +190,6 @@ Sound::Sound(Graphics& graphics)
     mMusic=graphics.loadMusic(MENU_MUSIC);
 
     clickSound=graphics.loadSound(CLICK_SOUND);
-    hoverSound=graphics.loadSound(HOVER_SOUND);
     gJump=graphics.loadSound(JUMP_SOUND);
     gCollect=graphics.loadSound(COLLECT_SOUND);
     gAttack=graphics.loadSound(ATTACK_SOUND);
@@ -194,36 +210,36 @@ void Text::renderScore(Graphics &graphics, const int score, const int highScore)
     scoreText=graphics.renderText(to_string(score), font, color);
     highScoreText=graphics.renderText(to_string(highScore), font, color);
 }
-//Button::Button(Graphics &graphics, int _posX, int _posY)
-//{
-//    state=IDLE;
-//    posX=_posX; posY=_posY;
-//    buttonTexture=graphics.loadTexture(BUTTON_FILE);
-//}
-//bool Button::inside(SDL_Event* event, const int buttonSize)
-//{
-//    if (event->type==SDL_MOUSEMOTION || event->type==SDL_MOUSEBUTTONDOWN || event->type==SDL_MOUSEBUTTONUP){
-//        int x, y;
-//        int button_h=BUTTON_H, button_w;
-//        if (buttonSize==SMALL_BUTTON){
-//            button_w=SMALL_BUTTON_W;
-//        }
-//        else if (buttonSize==MED_BUTTON){
-//            button_w=MED_BUTTON_W;
-//        }
-//        else{
-//            button_w=BIG_BUTTON_W;
-//        }
-//        SDL_GetMouseState(&x, &y);
-//        bool in=true;
-//        if (x<posX) in=false;
-//        else if (x>posX+button_w) in=false;
-//        else if (y<posY) in=false;
-//        else if (y>posY+button_h) in=false;
-//        return in;
-//    }
-//    return false;
-//}
+Button::Button(Graphics &graphics, int _posX, int _posY, int _texX, int _texY)
+{
+    clicked=false, on=false;
+    posX=_posX; posY=_posY; texX=_texX; texY=_texY;
+    buttonTexture=graphics.loadTexture(BUTTON_FILE);
+}
+bool Button::inside(SDL_Event* event, const int buttonSize)
+{
+    if (event->type==SDL_MOUSEMOTION || event->type==SDL_MOUSEBUTTONDOWN || event->type==SDL_MOUSEBUTTONUP){
+        int x, y;
+        int button_h=BUTTON_H, button_w;
+        if (buttonSize==SMALL_BUTTON){
+            button_w=SMALL_BUTTON_W;
+        }
+        else if (buttonSize==MED_BUTTON){
+            button_w=MED_BUTTON_W;
+        }
+        else{
+            button_w=BIG_BUTTON_W;
+        }
+        SDL_GetMouseState(&x, &y);
+        bool in=true;
+        if (x<posX) in=false;
+        else if (x>posX+button_w) in=false;
+        else if (y<posY) in=false;
+        else if (y>posY+button_h) in=false;
+        return in;
+    }
+    return false;
+}
 string getHighScore(const string path)
 {
     fstream highScoreFile(path);

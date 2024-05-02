@@ -9,101 +9,121 @@ void waitUntilKeyPressed()
         SDL_Delay(100);
     }
 }
-//void handlePlayButton(Graphics& graphics, SDL_Event* event, Button &playButton, bool &Menu, bool &quitMenu, bool &Play, Sound &sound)
-//{
-//    if (playButton.inside(event, MED_BUTTON)){
-//        switch (event->type)
-//        {
-//        case SDL_MOUSEMOTION:
-//            graphics.playSound(sound.hoverSound);
-//            graphics.renderUI(playButton.buttonTexture, playButton.posX, playButton.posY, 128, 64, MED_BUTTON_W, BUTTON_H);
-//            break;
-//        case SDL_MOUSEBUTTONDOWN:
-//            Menu=false;
-//            quitMenu=true;
-//            Play=true;
-//            graphics.playSound(sound.clickSound);
-//            graphics.renderUI(playButton.buttonTexture, playButton.posX, playButton.posY, 256, 64, MED_BUTTON_W, BUTTON_H);
-//            break;
-//        }
-//    }
-//    else graphics.renderUI(playButton.buttonTexture, playButton.posX, playButton.posY, 0,64,MED_BUTTON_W,BUTTON_H);
-//}
-//void handleBackButton(Graphics& graphics, SDL_Event* event, Button &backButton, bool &inMenu, bool &current, Sound &sound)
-//{
-//    if (backButton.inside(event, SMALL_BUTTON)){
-//        switch (event->type)
-//        {
-//        case SDL_MOUSEMOTION:
-//            graphics.playSound(sound.hoverSound);
-//            graphics.renderUI(backButton.buttonTexture, backButton.posX, backButton.posY, 260, 0, SMALL_BUTTON_W, BUTTON_H);
-//            break;
-//        case SDL_MOUSEBUTTONDOWN:
-//            current=false;
-//            inMenu=true;
-//            graphics.playSound(sound.clickSound);
-//            graphics.renderUI(backButton.buttonTexture, backButton.posX, backButton.posY, 324, 0, SMALL_BUTTON_W, BUTTON_H);
-//            break;
-//        }
-//    }
-//    else graphics.renderUI(backButton.buttonTexture, backButton.posX, backButton.posY, 196,0, SMALL_BUTTON_W, BUTTON_H);
-//}
-//void handleInfoButton(Graphics &graphics, SDL_Event *event, Button &infoButton, bool &inInfo, bool& inMenu, Sound &sound)
-//{
-//    if (infoButton.inside(event, MED_BUTTON)){
-//        switch (event->type)
-//        {
-//        case SDL_MOUSEMOTION:
-//            graphics.playSound(sound.hoverSound);
-//            graphics.renderUI(infoButton.buttonTexture, infoButton.posX, infoButton.posY, 128, 262, MED_BUTTON_W, BUTTON_H);
-//            break;
-//        case SDL_MOUSEBUTTONDOWN:
-//            inMenu=false;
-//            inInfo=true;
-//            graphics.playSound(sound.clickSound);
-//            graphics.renderUI(infoButton.buttonTexture, infoButton.posX, infoButton.posY, 256, 262, MED_BUTTON_W, BUTTON_H);
-//            break;
-//        }
-//    }
-//    else graphics.renderUI(infoButton.buttonTexture, infoButton.posX, infoButton.posY, 0, 262, MED_BUTTON_W, BUTTON_H);
-//}
-//void handleCreditButton(Graphics &graphics, SDL_Event *event, Button &creditButton, bool &inCredit, bool &inMenu, Sound &sound)
-//{
-//    if (creditButton.inside(event, BIG_BUTTON)){
-//        switch (event->type)
-//        {
-//        case SDL_MOUSEMOTION:
-//            graphics.playSound(sound.hoverSound);
-//            graphics.renderUI(creditButton.buttonTexture, creditButton.posX, creditButton.posY, 160, 196, BIG_BUTTON_W, BUTTON_H);
-//            break;
-//        case SDL_MOUSEBUTTONDOWN:
-//            inMenu=false;
-//            inCredit=true;
-//            graphics.playSound(sound.clickSound);
-//            graphics.renderUI(creditButton.buttonTexture, creditButton.posX, creditButton.posY, 320, 196, BIG_BUTTON_W, BUTTON_H);
-//            break;
-//        }
-//    }
-//    else graphics.renderUI(creditButton.buttonTexture, creditButton.posX, creditButton.posY, 0,196,BIG_BUTTON_W,BUTTON_H);
-//}
-//void handleQuitButton(Graphics &graphics, SDL_Event* event, Button &quitButton, bool &quit, Sound &sound)
-//{
-//    if (quitButton.inside(event, MED_BUTTON)){
-//        switch (event->type)
-//        {
-//        case SDL_MOUSEMOTION:
-//            graphics.playSound(sound.hoverSound);
-//            graphics.renderUI(quitButton.buttonTexture, quitButton.posX, quitButton.posY, 128, 130, MED_BUTTON_W, BUTTON_H);
-//            break;
-//        case SDL_MOUSEBUTTONDOWN:
-//            quit=true;
-//            graphics.playSound(sound.clickSound);
-//            graphics.renderUI(quitButton.buttonTexture, quitButton.posX, quitButton.posY, 256, 130, MED_BUTTON_W, BUTTON_H);
-//            break;
-//        }
-//    }
-//    else graphics.renderUI(quitButton.buttonTexture, quitButton.posX, quitButton.posY, 0,130,MED_BUTTON_W,BUTTON_H);
-//}
+void handleBackButton(Graphics &graphics, SDL_Event *event, Button &backButton,Sound &sound)
+{
+    if (!backButton.on){
+        backButton.texX=196; backButton.texY=0;
+        return;
+    }
+    if (backButton.inside(event, SMALL_BUTTON)){
+        switch(event->type)
+        {
+        case SDL_MOUSEMOTION:
+            backButton.texX=260; backButton.texY=0;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            backButton.clicked=true;
+            graphics.playSound(sound.clickSound);
+            backButton.texX=324; backButton.texY=0;
+            break;
+        }
+    }
+    else{
+        backButton.texX=196; backButton.texY=0;
+    }
+}
+void handlePlayButton (Graphics &graphics, SDL_Event *event, Button &playButton,Sound &sound)
+{
+    if (!playButton.on){
+        playButton.texX=0; playButton.texY=64;
+        return;
+    }
+    if (playButton.inside(event, MED_BUTTON)){
+        switch(event->type)
+        {
+        case SDL_MOUSEMOTION:
+            playButton.texX=128; playButton.texY=64;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            playButton.clicked=true;
+            graphics.playSound(sound.clickSound);
+            playButton.texX=256; playButton.texY=64;
+            break;
+        }
+    }
+    else{
+        playButton.texX=0; playButton.texY=64;
+    }
+}
+void handleInfoButton (Graphics &graphics, SDL_Event *event, Button &infoButton,Sound &sound)
+{
+    if (!infoButton.on){
+        infoButton.texX=0; infoButton.texY=262;
+        return;
+    }
+    if (infoButton.inside(event, MED_BUTTON)){
+        switch(event->type)
+        {
+        case SDL_MOUSEMOTION:
+            infoButton.texX=128; infoButton.texY=262;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            infoButton.clicked=true;
+            graphics.playSound(sound.clickSound);
+            infoButton.texX=256; infoButton.texY=262;
+            break;
+        }
+    }
+    else{
+        infoButton.texX=0; infoButton.texY=262;
+    }
+}
+void handleCreditButton (Graphics &graphics, SDL_Event *event, Button &creditButton,Sound &sound)
+{
+    if (!creditButton.on) {
+        creditButton.texX=0; creditButton.texY=196;
+        return;
+    }
+    if (creditButton.inside(event, BIG_BUTTON)){
+        switch(event->type)
+        {
+        case SDL_MOUSEMOTION:
+            creditButton.texX=160; creditButton.texY=196;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            creditButton.clicked=true;
+            graphics.playSound(sound.clickSound);
+            creditButton.texX=320; creditButton.texY=196;
+            break;
+        }
+    }
+    else{
+        creditButton.texX=0; creditButton.texY=196;
+    }
+}
+void handleQuitButton (Graphics& graphics, SDL_Event *event, Button &quitButton, Sound &sound)
+{
+    if (!quitButton.on){
+        quitButton.texX=0; quitButton.texY=130;
+        return;
+    }
+    if (quitButton.inside(event,MED_BUTTON)){
+        switch(event->type)
+        {
+        case SDL_MOUSEMOTION:
+            quitButton.texX=128; quitButton.texY=130;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            quitButton.clicked=true;
+            graphics.playSound(sound.clickSound);
+            quitButton.texX=256; quitButton.texY=130;
+            break;
+        }
+    }
+    else{
+        quitButton.texX=0; quitButton.texY=130;
+    }
+}
 
 void action(Graphics& graphics, ParallaxBackground& background, Sound &sound, Character &berie, Obstacle &castle, Obstacle &bird, Obstacle &crab,
             Obstacle &water, vector<Bullet*> &bullets, const int speedUp, const int types, const int level, int& score, bool &quit)
@@ -227,7 +247,6 @@ void action(Graphics& graphics, ParallaxBackground& background, Sound &sound, Ch
         else{
             SDL_Delay(1000);
             quit=true;
-            // neu play again thi set frame dead ve 0
         }
     }
     if (bullets.size()>0){
@@ -286,11 +305,10 @@ void update(int &time, int &speedUp,int &level, int &types, int& score)
 {
     time++;
     if (time%10==0) score+=(1+level*SCORE_MULTIPLIER);
+    if (time%500==0 && time!=0) speedUp++;
     if (time>TIME_UP){
         time=0;
-        speedUp++;
         if (level<MAX_LEVEL) level++;
-        cerr << level << endl;
         if (types<MAX_TYPE) types++;
     }
 }
@@ -328,7 +346,6 @@ void destroySoundAndText(Sound &sound, Text &text)
     if (sound.gMusic!=nullptr) Mix_FreeMusic(sound.gMusic);
     if (sound.mMusic!=nullptr) Mix_FreeMusic(sound.mMusic);
     if (sound.clickSound!=nullptr) Mix_FreeChunk(sound.clickSound);
-    if (sound.hoverSound!=nullptr) Mix_FreeChunk(sound.hoverSound);
     if (sound.birdSound!=nullptr) Mix_FreeChunk(sound.birdSound);
     if (sound.deadSound!=nullptr) Mix_FreeChunk(sound.deadSound);
     if (sound.gAttack!=nullptr) Mix_FreeChunk(sound.gAttack);

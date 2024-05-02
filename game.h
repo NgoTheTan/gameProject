@@ -2,11 +2,11 @@
 #define _GAME__H
 #include "logic.h"
 void waitUntilKeyPressed();
-//void handleBackButton( SDL_Event* event, Button &backButton, bool &inMenu,bool &current, Sound &sound);
-//void handlePlayButton(SDL_Event* event, Button &playButton, bool &Menu, bool &Play,bool &quitMenu, Sound &sound);
-//void handleInfoButton( SDL_Event *event, Button &infoButton, bool &inInfo, bool &inMenu, Sound &sound);
-//void handleCreditButton( SDL_Event *event, Button &creditButton, bool &inCredit, bool &inMenu, Sound &sound);
-//void handleQuitButton( SDL_Event* event, Button &quitButton, bool &quit, Sound &sound);
+void handleBackButton(Graphics &graphics, SDL_Event *event, Button &backButton, Sound &sound);
+void handlePlayButton (Graphics &graphics, SDL_Event *event, Button &playButton, Sound &sound);
+void handleInfoButton (Graphics &graphics, SDL_Event *event, Button &infoButton, Sound &sound);
+void handleCreditButton (Graphics &graphics, SDL_Event *event, Button &creditButton,Sound &sound);
+void handleQuitButton (Graphics& graphics, SDL_Event *event, Button &quitButton,Sound &sound);
 void action(Graphics& graphics, ParallaxBackground& background, Sound &sound, Character &berie, Obstacle &castle, Obstacle &bird, Obstacle &crab,
             Obstacle &water, vector<Bullet*> &bullets, const int speedUp, const int types, const int level, int& score, bool &quit);
 void HUD(Graphics& graphics, const Character berie, SDL_Texture* barTexture, Text& text, const int score, const int highScore);

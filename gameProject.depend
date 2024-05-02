@@ -4,10 +4,10 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1714610300 source:d:\study\cpp\gameproject\main.cpp
+1714628953 source:d:\study\cpp\gameproject\main.cpp
 	"game.h"
 
-1714580152 d:\study\cpp\gameproject\defs.h
+1714628960 d:\study\cpp\gameproject\defs.h
 
 1714560077 d:\study\cpp\gameproject\graphics.h
 	<SDL.h>
@@ -21,17 +21,17 @@
 	<bits/stdc++.h>
 	"graphics.h"
 
-1714610285 d:\study\cpp\gameproject\logic.h
+1714627277 d:\study\cpp\gameproject\logic.h
 	"graphics.h"
 	<ctime>
 	<cstdlib>
 
-1714610285 source:d:\study\cpp\gameproject\logic.cpp
+1714627277 source:d:\study\cpp\gameproject\logic.cpp
 	"logic.h"
 
-1714610285 source:d:\study\cpp\gameproject\game.cpp
+1714627564 source:d:\study\cpp\gameproject\game.cpp
 	"game.h"
 
-1714610285 d:\study\cpp\gameproject\game.h
+1714622827 d:\study\cpp\gameproject\game.h
 	"logic.h"
 

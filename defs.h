@@ -37,7 +37,6 @@ const int SCREEN_HEIGHT = 540;
 #define DEAD_SOUND "assets//sound//dead.wav"
 #define YAY_SOUND "assets//sound//yay.wav"
 #define MENU_MUSIC "assets//sound//menuMusic.mp3"
-#define HOVER_SOUND "assets//sound//hover.wav"
 #define CLICK_SOUND "assets//sound//click.wav"
 #define FONT "assets//font//Silver.ttf"
 
@@ -85,7 +84,7 @@ const int INFO_BUTTON_POS_X=747;
 const int INFO_BUTTON_POS_Y=260;
 const int QUIT_BUTTON_POS_X=747;
 const int QUIT_BUTTON_POS_Y=420;
-const int CREDIT_BUTTON_POS_X=730;
+const int CREDIT_BUTTON_POS_X=733;
 const int CREDIT_BUTTON_POS_Y=340;
 const int BACK_BUTTON_POS_X=40;
 const int BACK_BUTTON_POS_Y=20;

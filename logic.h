@@ -39,6 +39,7 @@ struct Character
     void Move();
     void playDead();
     void attack();
+    void revive();
 };
 
 struct Obstacle
@@ -79,7 +80,6 @@ struct Sound
     Mix_Chunk *deadSound;
     Mix_Chunk *yaySound;
     Mix_Chunk *clickSound;
-    Mix_Chunk *hoverSound;
     Sound(Graphics& graphics);
 };
 struct Text
@@ -93,14 +93,14 @@ struct Text
     Text(Graphics &graphics);
     void renderScore(Graphics &graphics, const int score, const int highScore);
 };
-//struct Button
-//{
-//    int state;
-//    SDL_Texture* buttonTexture;
-//    int posX, posY, texX, texY;
-//    Button(Graphics &graphics, int _posX, int _posY);
-//    bool inside(SDL_Event *event, const int buttonSize);
-//};
+struct Button
+{
+    bool clicked, on;
+    SDL_Texture* buttonTexture;
+    int posX, posY, texX, texY;
+    Button(Graphics &graphics, int _posX, int _posY, int _texX, int _texY);
+    bool inside(SDL_Event *event, const int buttonSize);
+};
 
 string getHighScore(const string path);
 void updateHighScore(const string path, const int score, const string high);
