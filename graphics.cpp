@@ -57,12 +57,6 @@ void Graphics::initSDL()
     }
 }
 
-void Graphics::prepareScene()
-{
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-}
-
 void Graphics::present()
 {
     SDL_RenderPresent(renderer);
@@ -76,22 +70,22 @@ void Graphics::renderLayer(const Layer& layer)
 
 void Graphics::initBackground(ParallaxBackground& background)
 {
-    background.layer_1.setTexture(loadTexture(LAYER_1_FILE));
-    background.layer_2.setTexture(loadTexture(LAYER_2_FILE));
-    background.layer_3.setTexture(loadTexture(LAYER_3_FILE));
-    background.layer_4.setTexture(loadTexture(LAYER_4_FILE));
-    background.ground.setTexture(loadTexture(GROUND_FILE));
+    background.layer_1.setTexture(loadTexture("assets//image//sky.png"));
+    background.layer_2.setTexture(loadTexture("assets//image//small_clouds.png"));
+    background.layer_3.setTexture(loadTexture("assets//image//med_clouds.png"));
+    background.layer_4.setTexture(loadTexture("assets//image//big_clouds.png"));
+    background.ground.setTexture(loadTexture("assets//image//sand.png"));
 }
 
 void Graphics::renderBackground(ParallaxBackground& background, const int accel)
 {
-    background.layer_1.scroll(LAYER_1_SPEED, BASE_SPEED);
+    background.layer_1.scroll(0, 0);
     renderLayer(background.layer_1);
-    background.layer_2.scroll(LAYER_2_SPEED, accel);
+    background.layer_2.scroll(1, accel);
     renderLayer(background.layer_2);
-    background.layer_3.scroll(LAYER_3_SPEED, accel);
+    background.layer_3.scroll(2, accel);
     renderLayer(background.layer_3);
-    background.layer_4.scroll(LAYER_4_SPEED, accel);
+    background.layer_4.scroll(3, accel);
     renderLayer(background.layer_4);
     background.ground.scroll(GROUND_SPEED, accel);
     renderLayer(background.ground);
@@ -192,4 +186,3 @@ void Graphics::quit()
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
-

@@ -48,8 +48,6 @@ struct Graphics
 
     void init();
 
-    void prepareScene();
-
     SDL_Texture* loadTexture(const char *filename);
 
     void renderTexture(SDL_Texture* texture, int x, int y);

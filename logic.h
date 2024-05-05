@@ -15,6 +15,10 @@
 #define BIRD 1
 #define CASTLE 0
 
+#define SMALL_BUTTON 0
+#define MED_BUTTON 1
+#define BIG_BUTTON 2
+#define HUGE_BUTTON 3
 
 struct Character
 {
@@ -31,11 +35,6 @@ struct Character
     Sprite jumpWithGun, fallWithGun;
     Sprite dead;
     Character(SDL_Texture* texture);
-    bool running();
-    bool jumping();
-    bool falling();
-    bool attacking();
-    bool damaged();
     void Move();
     void playDead();
     void attack();
@@ -54,6 +53,7 @@ struct Obstacle
     Obstacle (SDL_Texture* collectable);
     void Move(const int accel, const int types);
     void spawn(const int accel);
+    void reset();
 };
 
 struct Bullet
@@ -71,6 +71,10 @@ struct Sound
 {
     Mix_Music *gMusic;
     Mix_Music *mMusic;
+    Mix_Chunk *earthquake;
+    Mix_Chunk *tsunami;
+    Mix_Chunk *terrify;
+    Mix_Chunk *run;
     Mix_Chunk *gJump;
     Mix_Chunk *gCollect;
     Mix_Chunk *gAttack;
@@ -87,9 +91,11 @@ struct Text
     TTF_Font* font;
     SDL_Color color={0,0,0,255};
     SDL_Texture* yourScoreText;
-    SDL_Texture* highText;
+    SDL_Texture* bestText;
     SDL_Texture* scoreText;
     SDL_Texture* highScoreText;
+    SDL_Texture* loseText;
+    SDL_Texture* newHighScoreText;
     Text(Graphics &graphics);
     void renderScore(Graphics &graphics, const int score, const int highScore);
 };
@@ -99,11 +105,11 @@ struct Button
     SDL_Texture* buttonTexture;
     int posX, posY, texX, texY;
     Button(Graphics &graphics, int _posX, int _posY, int _texX, int _texY);
-    bool inside(SDL_Event *event, const int buttonSize);
+    bool underMouse(SDL_Event *event, const int buttonSize);
 };
 
-string getHighScore(const string path);
-void updateHighScore(const string path, const int score, const string high);
+int getHighScore(const string path);
+void updateHighScore(const string path, const int score, int &highScore);
 
 bool checkCollision(int leftA, int rightA, int topA, int botA, int leftB, int rightB, int topB, int botB);
 bool checkHitObstacle(const Bullet* bullet,const SDL_Rect* bullet_clip, const Obstacle obstacle, const SDL_Rect* obstacle_clip);

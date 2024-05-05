@@ -4,50 +4,10 @@
 const int SCREEN_WIDTH = 960;
 const int SCREEN_HEIGHT = 540;
 
-#define GROUND_FILE "assets//image//sand.png"
-#define LAYER_1_FILE "assets//image//sky.png"
-#define LAYER_2_FILE "assets//image//small_clouds.png"
-#define LAYER_3_FILE "assets//image//med_clouds.png"
-#define LAYER_4_FILE "assets//image//big_clouds.png"
-
-#define BERIE_FILE "assets//image//berie.png"
-
-#define BALL_FILE "assets//image//water.png"
-#define SHOOT_FILE "assets//image//shooting.png"
-#define SPLASH_FILE "assets//image//hit.png"
-
-#define CASTLES_FILE "assets//image//castles.png"
-#define BIRD_FILE "assets//image//bird.png"
-#define CRAB_FILE "assets//image//crab.png"
-#define VANISH_FILE "assets//image//smoke.png"
-
-#define BAR_FILE "assets//image//bars.png"
-#define BUTTON_FILE "assets//image//button.png"
-#define MENU_FILE "assets//image//menu.jpg"
-#define INFO_FILE "assets//image//instruction.png"
-#define CREDIT_FILE "assets//image//credit.png"
-
-#define JUMP_SOUND "assets//sound//jump.wav"
-#define COLLECT_SOUND "assets//sound//collect.wav"
-#define ATTACK_SOUND "assets//sound//attack.wav"
-#define SPLASH_SOUND "assets//sound//splash.wav"
-#define SHOOT_SOUND "assets//sound//shoot.wav"
-#define BIRD_SOUND "assets//sound//bird.wav"
-#define GAME_MUSIC "assets//sound//gameMusic.mp3"
-#define DEAD_SOUND "assets//sound//dead.wav"
-#define YAY_SOUND "assets//sound//yay.wav"
-#define MENU_MUSIC "assets//sound//menuMusic.mp3"
-#define CLICK_SOUND "assets//sound//click.wav"
-#define FONT "assets//font//Silver.ttf"
-
-const int BASE_SPEED=0;
 const int GROUND_SPEED=8;
-const int LAYER_1_SPEED=0;
-const int LAYER_2_SPEED=1;
-const int LAYER_3_SPEED=2;
-const int LAYER_4_SPEED=3;
-const int TIME_UP=1000;
+const int TIME_UP=800;
 const int MAX_LEVEL=10;
+const int SCORE_MULTIPLIER=5;
 
 const int BASE_ENERGY=585;
 const int ENERGY_LOST=15;
@@ -55,39 +15,49 @@ const int ENERGY_GAIN=5;
 const int MAX_POWER=4000;
 const int POWER_GAIN=500;
 const int POWER_LOST=5;
-const int BULLET_SPEED=10;
 
-const int BAR_X=10;
-const int BAR_Y=5;
 const int POW_POS_X=88;
 const int POW_POS_Y=12;
 const int POW_WIDTH[]={14,41,68,95,122,149,176,190};
 const int ENERGY_POS_X[]={88,120,151,183,214};
 const int ENERGY_POS_Y=105;
-const int SCORE_MULTIPLIER=5;
-const int HI_TEXT_POS_X=690;
-const int HI_TEXT_POS_Y=10;
+const int M_BEST_TEXT_POS_Y=485;
+const int M_BEST_TEXT_POS_X=165;
+const int M_HS_TEXT_POS_X=250;
+const int BEST_TEXT_POS_X=778;
+const int BEST_TEXT_POS_Y=10;
 const int YS_TEXT_POS_X=690;
 const int YS_TEXT_POS_Y=50;
 const int S_TEXT_POS_X=850;
 const int HS_TEXT_POS_X=850;
-const int BIG_BUTTON=0;
-const int MED_BUTTON=1;
-const int SMALL_BUTTON=2;
+const int LOSE_TEXT_POS_X=420;
+const int LOSE_TEXT_POS_Y=170;
+const int L_YS_TEXT_POS_X=380;
+const int NEW_HS_TEXT_POS_X=350;
+const int L_SCORE_TEXT_POS_X=550;
+const int L_SCORE_TEXT_POS_Y=250;
+
 const int BUTTON_H=59;
 const int SMALL_BUTTON_W=59;
 const int MED_BUTTON_W=123;
 const int BIG_BUTTON_W=155;
+const int HUGE_BUTTON_W=187;
 const int PLAY_BUTTON_POS_X=747;
 const int PLAY_BUTTON_POS_Y=180;
 const int INFO_BUTTON_POS_X=747;
 const int INFO_BUTTON_POS_Y=260;
 const int QUIT_BUTTON_POS_X=747;
 const int QUIT_BUTTON_POS_Y=420;
-const int CREDIT_BUTTON_POS_X=733;
+const int CREDIT_BUTTON_POS_X=731;
 const int CREDIT_BUTTON_POS_Y=340;
 const int BACK_BUTTON_POS_X=40;
 const int BACK_BUTTON_POS_Y=20;
+const int L_BUTTON_POS_Y=430;
+const int MAIN_MENU_BUTTON_POS_X=200;
+const int RESTART_BUTTON_POS_X=400;
+const int GAME_OVER_BUTTON_POS_X=568;
+const int PAUSE_CONTINUE_BUTTON_POS_X=450;
+const int PAUSE_CONTINUE_BUTTON_POS_Y=10;
 
 const int GROUND=415;
 const int MAX_HEIGHT=175;
@@ -99,10 +69,11 @@ const int MIN_HEIGHT=220;
 const int CHAR_HEIGHT=76;
 const int CHAR_WIDTH=65;
 
-const int COLLECT_POS_RANGE=100;
+const int COLLECT_POS_RANGE=200;
 const int BIRD_POS_RANGE=300;
 const int CASTLE_POS_RANGE=100;
-const int CRAB_POS_RANGE=200;
+const int CRAB_POS_RANGE=500;
+const int OVERRIDE_RANGE=30;
 const int BASE_TYPES=2;
 const int MAX_TYPE=5;
 
