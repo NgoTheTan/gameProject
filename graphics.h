@@ -58,6 +58,8 @@ struct Graphics
 
     void renderBackground(ParallaxBackground &background, const int accel);
 
+    void stationaryBackground(ParallaxBackground& background);
+
     void renderSprite(int x, int y, const Sprite& sprite);
 
     void renderUI(SDL_Texture* texture, int x, int y, int texX, int texY, int w, int h);

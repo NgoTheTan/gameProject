@@ -45,7 +45,7 @@ void Graphics::initSDL()
     window=SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window==nullptr) logErrorAndExit("CreateWindow", SDL_GetError());
     if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG)) logErrorAndExit("SDL_image error:", IMG_GetError());
-    renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_PRESENTVSYNC);
     if (renderer==nullptr) logErrorAndExit("CreateRenderer", SDL_GetError());
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -88,6 +88,19 @@ void Graphics::renderBackground(ParallaxBackground& background, const int accel)
     background.layer_4.scroll(3, accel);
     renderLayer(background.layer_4);
     background.ground.scroll(GROUND_SPEED, accel);
+    renderLayer(background.ground);
+}
+void Graphics::stationaryBackground(ParallaxBackground& background)
+{
+    background.layer_1.scroll(0, 0);
+    renderLayer(background.layer_1);
+    background.layer_2.scroll(0, 0);
+    renderLayer(background.layer_2);
+    background.layer_3.scroll(0,0);
+    renderLayer(background.layer_3);
+    background.layer_4.scroll(0,0);
+    renderLayer(background.layer_4);
+    background.ground.scroll(0,0);
     renderLayer(background.ground);
 }
 void Graphics::renderSprite(int x, int y, const Sprite& sprite){

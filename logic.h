@@ -71,6 +71,7 @@ struct Sound
 {
     Mix_Music *gMusic;
     Mix_Music *mMusic;
+    Mix_Music *lMusic;
     Mix_Chunk *earthquake;
     Mix_Chunk *tsunami;
     Mix_Chunk *terrify;
@@ -84,6 +85,7 @@ struct Sound
     Mix_Chunk *deadSound;
     Mix_Chunk *yaySound;
     Mix_Chunk *clickSound;
+    Mix_Chunk *drowning;
     Sound(Graphics& graphics);
 };
 struct Text
@@ -104,12 +106,9 @@ struct Button
     bool clicked, on;
     SDL_Texture* buttonTexture;
     int posX, posY, texX, texY;
-    Button(Graphics &graphics, int _posX, int _posY, int _texX, int _texY);
+    Button(SDL_Texture* texture, int _posX, int _posY, int _texX, int _texY);
     bool underMouse(SDL_Event *event, const int buttonSize);
 };
-
-int getHighScore(const string path);
-void updateHighScore(const string path, const int score, int &highScore);
 
 bool checkCollision(int leftA, int rightA, int topA, int botA, int leftB, int rightB, int topB, int botB);
 bool checkHitObstacle(const Bullet* bullet,const SDL_Rect* bullet_clip, const Obstacle obstacle, const SDL_Rect* obstacle_clip);

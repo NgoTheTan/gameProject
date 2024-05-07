@@ -13,6 +13,20 @@ int main(int argc, char* argv[])
     SDL_Texture* intro3=graphics.loadTexture("assets//image//intro3.jpg");
     SDL_Texture* intro4=graphics.loadTexture("assets//image//intro4.jpg");
 
+    SDL_Texture* lose1=graphics.loadTexture("assets//image//lose1.png");
+    SDL_Texture* lose2=graphics.loadTexture("assets//image//lose2.png");
+    SDL_Texture* lose3=graphics.loadTexture("assets//image//lose3.png");
+    SDL_Texture* lose4=graphics.loadTexture("assets//image//lose4.png");
+    SDL_Texture* lose5=graphics.loadTexture("assets//image//lose5.png");
+    SDL_Texture* lose6=graphics.loadTexture("assets//image//lose6.png");
+    SDL_Texture* lose7=graphics.loadTexture("assets//image//lose7.png");
+    SDL_Texture* lose8=graphics.loadTexture("assets//image//lose8.png");
+    SDL_Texture* lose9=graphics.loadTexture("assets//image//lose9.png");
+    SDL_Texture* lose10=graphics.loadTexture("assets//image//lose10.png");
+    SDL_Texture* lose11=graphics.loadTexture("assets//image//lose11.png");
+    SDL_Texture* lose12=graphics.loadTexture("assets//image//lose12.png");
+    SDL_Texture* lose13=graphics.loadTexture("assets//image//lose13.png");
+
     ParallaxBackground background;
     graphics.initBackground(background);
 
@@ -33,16 +47,17 @@ int main(int argc, char* argv[])
     SDL_Texture* castleTexture=graphics.loadTexture("assets//image//castles.png");
     Obstacle castle(castleTexture,vanishTexture, CASTLE);
 
-    Button playButton(graphics, PLAY_BUTTON_POS_X, PLAY_BUTTON_POS_Y, 0,64);
-    Button infoButton(graphics, INFO_BUTTON_POS_X, INFO_BUTTON_POS_Y,0,262);
-    Button creditButton(graphics, CREDIT_BUTTON_POS_X, CREDIT_BUTTON_POS_Y,0,196);
-    Button quitButton(graphics, QUIT_BUTTON_POS_X, QUIT_BUTTON_POS_Y,0,130);
-    Button backButton(graphics, BACK_BUTTON_POS_X, BACK_BUTTON_POS_Y,196,0);
-    Button mainMenuButton(graphics, MAIN_MENU_BUTTON_POS_X, L_BUTTON_POS_Y, 0, 458);
-    Button restartButton(graphics, RESTART_BUTTON_POS_X, L_BUTTON_POS_Y, 0,326);
-    Button gameOverButton(graphics, GAME_OVER_BUTTON_POS_X, L_BUTTON_POS_Y,0,392);
-    Button pauseButton(graphics, PAUSE_CONTINUE_BUTTON_POS_X, PAUSE_CONTINUE_BUTTON_POS_Y, 392,0);
-    Button continueButton(graphics, PAUSE_CONTINUE_BUTTON_POS_X, PAUSE_CONTINUE_BUTTON_POS_Y, 0, 0);
+    SDL_Texture *buttonTexture=graphics.loadTexture("assets//image//button.png");
+    Button playButton(buttonTexture, PLAY_BUTTON_POS_X, PLAY_BUTTON_POS_Y, 0,64);
+    Button infoButton(buttonTexture, INFO_BUTTON_POS_X, INFO_BUTTON_POS_Y,0,262);
+    Button creditButton(buttonTexture, CREDIT_BUTTON_POS_X, CREDIT_BUTTON_POS_Y,0,196);
+    Button quitButton(buttonTexture, QUIT_BUTTON_POS_X, QUIT_BUTTON_POS_Y,0,130);
+    Button backButton(buttonTexture, BACK_BUTTON_POS_X, BACK_BUTTON_POS_Y,196,0);
+    Button mainMenuButton(buttonTexture, MAIN_MENU_BUTTON_POS_X, L_BUTTON_POS_Y, 0, 458);
+    Button restartButton(buttonTexture, RESTART_BUTTON_POS_X, L_BUTTON_POS_Y, 0,326);
+    Button gameOverButton(buttonTexture, GAME_OVER_BUTTON_POS_X, L_BUTTON_POS_Y,0,392);
+    Button pauseButton(buttonTexture, PAUSE_CONTINUE_BUTTON_POS_X, PAUSE_CONTINUE_BUTTON_POS_Y, 392,0);
+    Button continueButton(buttonTexture, PAUSE_CONTINUE_BUTTON_POS_X, PAUSE_CONTINUE_BUTTON_POS_Y, 0, 0);
 
     Sound sound(graphics);
     Text text(graphics);
@@ -128,7 +143,7 @@ int main(int argc, char* argv[])
                     graphics.renderUI(pauseButton.buttonTexture, pauseButton.posX, pauseButton.posY, pauseButton.texX, pauseButton.texY, SMALL_BUTTON_W, BUTTON_H);
                     if(berie.status!=DEAD && berie.status!=ATTACK) berie.Move();
                     generateObstacles(berie, graphics, castle, bird, crab, water, speedUp, types, level);
-                    obstacleCollision(graphics, sound, berie, castle, bird, crab, water, score);
+                    obstacleCollision(graphics, sound, berie, castle, bird, crab, water, score, level);
                     characterAction(graphics, berie, quitPlay, Lose);
                     UI(graphics, berie, barTexture, text, score, highScore);
                     if (bullets.size()>0){
@@ -142,10 +157,12 @@ int main(int argc, char* argv[])
                     update(berie, time, speedUp, level, types, score);
                 }
                 else{
+                    Mix_PauseMusic();
                     pauseButton.on=false;
                     continueButton.on=true;
                     if (currentKeyStates[SDL_SCANCODE_C]) continueButton.clicked=true;
                     if (continueButton.clicked){
+                        Mix_ResumeMusic();
                         pauseButton.clicked=false;
                         continueButton.clicked=false;
                     }
@@ -158,7 +175,7 @@ int main(int argc, char* argv[])
             Play=false;
         }
         if (Lose){
-            graphics.renderSprite(berie.posX, berie.posY, berie.dead);
+            loseScene(graphics, berie, background, lose1, lose2, lose3, lose4, lose5, lose6, lose7, lose8, lose9, lose10, lose11, lose12, lose13, sound);
             text.renderScore(graphics, score, highScore);
             graphics.renderTexture(text.loseText, LOSE_TEXT_POS_X, LOSE_TEXT_POS_Y);
             graphics.renderTexture(text.scoreText, L_SCORE_TEXT_POS_X, L_SCORE_TEXT_POS_Y);
@@ -184,6 +201,7 @@ int main(int argc, char* argv[])
                 graphics.present();
                 SDL_Delay(100);
             }
+            Mix_HaltMusic();
             SDL_DestroyTexture(text.scoreText); text.scoreText=nullptr;
             SDL_DestroyTexture(text.highScoreText); text.highScoreText=nullptr;
             Lose=false;

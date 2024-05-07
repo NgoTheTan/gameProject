@@ -1,14 +1,4 @@
 #include "game.h"
-void waitUntilKeyPressed()
-{
-    SDL_Event e;
-    while (true){
-        if ( SDL_PollEvent(&e) != 0 &&
-             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
-            return;
-        SDL_Delay(100);
-    }
-}
 void handleBackButton(Graphics &graphics, SDL_Event *event, Button &backButton,Sound &sound)
 {
     if (!backButton.on){
@@ -277,24 +267,41 @@ void workOnMenu(Graphics &graphics,SDL_Texture* menu, SDL_Texture* info, SDL_Tex
 }
 void intro(Graphics &graphics, SDL_Texture* intro1, SDL_Texture* intro2, SDL_Texture* intro3, SDL_Texture* intro4, Sound &sound)
 {
+    SDL_Event event;
+    SDL_EventState(SDL_KEYDOWN, SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);
+    SDL_EventState(SDL_KEYUP, SDL_IGNORE);
+    SDL_EventState(SDL_WINDOWEVENT,SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEWHEEL, SDL_IGNORE);
+    SDL_EventState(SDL_TEXTINPUT, SDL_IGNORE);
     graphics.renderTexture(intro1, 0, 0);
     graphics.present();
     graphics.playSound(sound.earthquake);
-    SDL_Delay(3000);
+    SDL_WaitEventTimeout(&event, 3000);
     graphics.renderTexture(intro2,0,0);
     graphics.present();
     graphics.playSound(sound.tsunami);
-    SDL_Delay(1000);
+    SDL_WaitEventTimeout(&event, 1000);
     graphics.playSound(sound.terrify);
-    SDL_Delay(2000);
+    SDL_WaitEventTimeout(&event, 2000);
     graphics.renderTexture(intro3,0,0);
     graphics.present();
-    SDL_Delay(500);
+    SDL_WaitEventTimeout(&event, 500);
     graphics.playSound(sound.run);
-    SDL_Delay(1000);
+    SDL_WaitEventTimeout(&event, 1000);
     graphics.renderTexture(intro4,0,0);
     graphics.present();
-    SDL_Delay(1000);
+    SDL_WaitEventTimeout(&event, 1000);
+    SDL_EventState(SDL_KEYDOWN, SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEBUTTONUP, SDL_ENABLE);
+    SDL_EventState(SDL_KEYUP, SDL_ENABLE);
+    SDL_EventState(SDL_WINDOWEVENT,SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEWHEEL, SDL_ENABLE);
+    SDL_EventState(SDL_TEXTINPUT, SDL_ENABLE);
 }
 void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &restartButton, Button &gameOverButton, Character &berie,
                          Obstacle& castle, Obstacle &bird, Obstacle&crab, Obstacle& water, bool &selectOption, bool &Menu, bool &Play, bool &quit)
@@ -322,6 +329,75 @@ void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &res
         restartButton.clicked=false;
         restartButton.texX=0; restartButton.texY=326;
     }
+}
+void loseScene(Graphics &graphics, const Character berie, ParallaxBackground &background, SDL_Texture* lose1, SDL_Texture* lose2, SDL_Texture* lose3, SDL_Texture* lose4,SDL_Texture* lose5,
+                SDL_Texture* lose6, SDL_Texture* lose7, SDL_Texture* lose8, SDL_Texture* lose9, SDL_Texture* lose10, SDL_Texture* lose11, SDL_Texture* lose12, SDL_Texture* lose13, Sound& sound)
+{
+    SDL_Event event;
+    SDL_EventState(SDL_KEYDOWN, SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);
+    SDL_EventState(SDL_KEYUP, SDL_IGNORE);
+    SDL_EventState(SDL_WINDOWEVENT,SDL_IGNORE);
+    SDL_EventState(SDL_MOUSEWHEEL, SDL_IGNORE);
+    SDL_EventState(SDL_TEXTINPUT, SDL_IGNORE);
+    graphics.playSound(sound.drowning);
+    graphics.renderSprite(berie.posX, berie.posY, berie.dead);
+    graphics.renderTexture(lose1, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderSprite(berie.posX, berie.posY, berie.dead);
+    graphics.renderTexture(lose2, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event,200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose4, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose5, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose6, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose7, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose8, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose9, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.stationaryBackground(background);
+    graphics.renderTexture(lose10, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event, 200);
+    graphics.renderTexture(lose11, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event,200);
+    graphics.renderTexture(lose12, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event,200);
+    graphics.renderTexture(lose13, 0,0);
+    graphics.present();
+    SDL_WaitEventTimeout(&event,200);
+    SDL_EventState(SDL_KEYDOWN, SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEMOTION, SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEBUTTONUP, SDL_ENABLE);
+    SDL_EventState(SDL_KEYUP, SDL_ENABLE);
+    SDL_EventState(SDL_WINDOWEVENT,SDL_ENABLE);
+    SDL_EventState(SDL_MOUSEWHEEL, SDL_ENABLE);
+    SDL_EventState(SDL_TEXTINPUT, SDL_ENABLE);
+    graphics.playMusic(sound.lMusic);
 }
 void generateObstacles(const Character berie, Graphics &graphics, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, const int speedUp, const int types, const int level)
 {
@@ -366,9 +442,12 @@ void generateObstacles(const Character berie, Graphics &graphics, Obstacle &cast
             graphics.renderSprite(water.posX, water.posY, water.collect);
         }
     }
+    else{
+        water.reset();
+    }
     checkOveride(castle, bird, crab, water);
 }
-void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score)
+void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score,const int level)
 {
     if (checkObstacleCollision(berie, bird, bird.foe.getCurrentClip())){
         if (berie.status!=DEAD && !bird.dead) graphics.playSound(sound.deadSound);
@@ -384,7 +463,7 @@ void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Obsta
             berie.status=DEAD;
         }
         else {
-            if (!castle.dead) score+=20;
+            if (!castle.dead) score+=(20+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
             castle.dead=true;
         }
     }
@@ -515,4 +594,25 @@ void update(const Character berie, int &time, int &speedUp,int &level, int &type
         if (level<MAX_LEVEL) level++;
         if (types<MAX_TYPE) types++;
     }
+}
+int getHighScore(const string path)
+{
+    fstream highScoreFile(path);
+    string high;
+    highScoreFile >> high;
+    int highScore;
+    stringstream convertToInt(high);
+    convertToInt >> highScore;
+    return highScore;
+}
+void updateHighScore(const string path, const int score, int &highScore)
+{
+    fstream highScoreFile;
+    highScoreFile.open(path, ios::out);
+    string newHighScore;
+    if (score>highScore){
+        highScore=score;
+    }
+    newHighScore=to_string(highScore);
+    highScoreFile << newHighScore;
 }

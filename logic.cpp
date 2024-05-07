@@ -123,14 +123,14 @@ void Obstacle::Move(const int accel, const int types)
         dead=false;
         vanish.currentFrame=0;
         if (type==BIRD){
-            posX=rand()%(SCREEN_WIDTH+BIRD_POS_RANGE)+SCREEN_WIDTH;
+            posX=rand()%(SCREEN_WIDTH+BIRD_POS_RANGE)+SCREEN_WIDTH+BIRD_POS_RANGE;
             posY=rand()%(MIN_HEIGHT-MAX_HEIGHT+1)+MAX_HEIGHT;
         }
         else if (type==CRAB){
             posX=rand()%(SCREEN_WIDTH+CRAB_POS_RANGE)+SCREEN_WIDTH+CRAB_POS_RANGE;
         }
         else if (type==CASTLE){
-            posX=rand()%(SCREEN_WIDTH+CASTLE_POS_RANGE)+SCREEN_WIDTH;
+            posX=rand()%(SCREEN_WIDTH+CASTLE_POS_RANGE)+SCREEN_WIDTH+CASTLE_POS_RANGE;
             foe.currentFrame=(rand()%types)*FRAME_RATE;
             posY=GROUND+(CHAR_HEIGHT-foe.getCurrentClip()->h)+5;
         }
@@ -141,7 +141,7 @@ void Obstacle::spawn(const int accel)
     posX-=(GROUND_SPEED+accel);
     if (posX+collect.getCurrentClip()->w<0){
         dead=false;
-        posX=rand()%(SCREEN_WIDTH+COLLECT_POS_RANGE)+SCREEN_WIDTH;
+        posX=rand()%(SCREEN_WIDTH+COLLECT_POS_RANGE)+SCREEN_WIDTH+COLLECT_POS_RANGE;
     }
 }
 
@@ -171,6 +171,7 @@ Sound::Sound(Graphics& graphics)
 {
     gMusic=graphics.loadMusic("assets//sound//gameMusic.mp3");
     mMusic=graphics.loadMusic("assets//sound//menuMusic.mp3");
+    lMusic=graphics.loadMusic("assets//sound//lose.mp3");
 
     earthquake=graphics.loadSound("assets//sound//earthquake.wav");
     tsunami=graphics.loadSound("assets//sound//tsunami.wav");
@@ -186,6 +187,7 @@ Sound::Sound(Graphics& graphics)
     birdSound=graphics.loadSound("assets//sound//bird.wav");
     deadSound=graphics.loadSound("assets//sound//dead.wav");
     yaySound=graphics.loadSound("assets//sound//yay.wav");
+    drowning=graphics.loadSound("assets//sound//drowning.wav");
 
 }
 Text::Text(Graphics &graphics)
@@ -201,11 +203,11 @@ void Text::renderScore(Graphics &graphics, const int score, const int highScore)
     scoreText=graphics.renderText(to_string(score), font, color);
     highScoreText=graphics.renderText(to_string(highScore), font, color);
 }
-Button::Button(Graphics &graphics, int _posX, int _posY, int _texX, int _texY)
+Button::Button(SDL_Texture *texture, int _posX, int _posY, int _texX, int _texY)
 {
     clicked=false, on=false;
     posX=_posX; posY=_posY; texX=_texX; texY=_texY;
-    buttonTexture=graphics.loadTexture("assets//image//button.png");
+    buttonTexture=texture;
 }
 bool Button::underMouse(SDL_Event* event, const int buttonSize)
 {
@@ -234,39 +236,18 @@ bool Button::underMouse(SDL_Event* event, const int buttonSize)
     }
     return false;
 }
-int getHighScore(const string path)
-{
-    fstream highScoreFile(path);
-    string high;
-    highScoreFile >> high;
-    int highScore;
-    stringstream convertToInt(high);
-    convertToInt >> highScore;
-    return highScore;
-}
-void updateHighScore(const string path, const int score, int &highScore)
-{
-    fstream highScoreFile;
-    highScoreFile.open(path, ios::out);
-    string newHighScore;
-    if (score>highScore){
-        highScore=score;
-    }
-    newHighScore=to_string(highScore);
-    highScoreFile << newHighScore;
-}
 void shooting(vector<Bullet*> &bullets, Graphics& graphics, Obstacle &castle, Obstacle& bird, const int accel, int& score, Sound &sound, const int level)
 {
     for (int i=0; i<bullets.size(); i++){
         Bullet* bullet=bullets[i];
         if (checkHitObstacle(bullet, bullet->shoot.getCurrentClip(), castle, castle.foe.getCurrentClip()) && !castle.dead && !bullet->hit){
-            score+=(20+level*SCORE_MULTIPLIER);
+            score+=(20+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
             bullet->hit=true;
             castle.dead=true;
             graphics.playSound(sound.waterSplash);
         }
         if (checkHitObstacle(bullet,bullet->shoot.getCurrentClip(), bird, bird.foe.getCurrentClip()) && !bird.dead && !bullet->hit){
-            score+=(50+level*SCORE_MULTIPLIER);
+            score+=(50+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
             bullet->hit=true;
             bird.dead=true;
             graphics.playSound(sound.birdSound);
@@ -322,13 +303,13 @@ void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &wa
     int leftA=castle.posX-OVERRIDE_RANGE, rightA=castle.posX+castle.foe.getCurrentClip()->w+OVERRIDE_RANGE;
     int leftB=bird.posX-OVERRIDE_RANGE, rightB=bird.posX+bird.foe.getCurrentClip()->w+OVERRIDE_RANGE;
     int leftC=crab.posX-OVERRIDE_RANGE, rightC=crab.posX+crab.foe.getCurrentClip()->w+OVERRIDE_RANGE;
-    int leftD=water.posX-OVERRIDE_RANGE, rightD=water.posX+water.collect.getCurrentClip()->w+OVERRIDE_RANGE;
-    if (leftC<=leftA && rightC>=leftA) crab.posX-=castle.foe.getCurrentClip()->w;
-    else if ((leftC>=leftA && rightC<=rightA) || (leftC<=rightA && rightC>=rightA)) crab.posX+=castle.foe.getCurrentClip()->w;
+    int leftD=water.posX, rightD=water.posX+water.collect.getCurrentClip()->w;
+    if ((leftC>=leftA && rightC<=rightA) || (leftC<=rightA && rightC>=rightA)) castle.posX+=crab.foe.getCurrentClip()->w;
+    else if (leftC<=leftA && rightC>=leftA) crab.posX-=castle.foe.getCurrentClip()->w;
     if (leftB<=leftA && rightB>=leftA) bird.posX-=castle.foe.getCurrentClip()->w;
-    else if ((leftB>=leftA && rightB<=rightA) || (leftB<=rightA && rightB>=rightA)) bird.posX+=castle.foe.getCurrentClip()->w;
-    if (leftC<=leftB && rightC>=leftB) crab.posX-=(bird.foe.getCurrentClip()->w);
+    else if ((leftB>=leftA && rightB<=rightA) || (leftB<=rightA && rightB>=rightA)) castle.posX+=bird.foe.getCurrentClip()->w;
+    if (leftC<=leftB && rightC>=leftB) bird.posX-=(crab.foe.getCurrentClip()->w);
     else if ((leftC>=leftB && rightC<=rightB) || (leftC<=rightB && rightC>=rightB)) crab.posX+=bird.foe.getCurrentClip()->w;
-    if (leftD<=leftB && rightD>=leftB) water.posX-=(bird.foe.getCurrentClip()->w);
+    if (leftD<=leftB && rightD>=leftB) bird.posX-=water.collect.getCurrentClip()->w;
     else if ((leftD>=leftB && rightD<=rightB) || (leftD<=rightB && rightD>=rightB)) water.posX+=bird.foe.getCurrentClip()->w;
 }
