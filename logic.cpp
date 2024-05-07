@@ -308,8 +308,8 @@ void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &wa
     else if (leftC<=leftA && rightC>=leftA) crab.posX-=castle.foe.getCurrentClip()->w;
     if (leftB<=leftA && rightB>=leftA) bird.posX-=castle.foe.getCurrentClip()->w;
     else if ((leftB>=leftA && rightB<=rightA) || (leftB<=rightA && rightB>=rightA)) castle.posX+=bird.foe.getCurrentClip()->w;
-    if (leftC<=leftB && rightC>=leftB) bird.posX-=(crab.foe.getCurrentClip()->w);
-    else if ((leftC>=leftB && rightC<=rightB) || (leftC<=rightB && rightC>=rightB)) crab.posX+=bird.foe.getCurrentClip()->w;
+    if (leftC<=leftB && rightC>=leftB) crab.posX+=bird.foe.getCurrentClip()->w;
+    else if ((leftC>=leftB && rightC<=rightB) || (leftC<=rightB && rightC>=rightB)) bird.posX-=(crab.foe.getCurrentClip()->w);
     if (leftD<=leftB && rightD>=leftB) bird.posX-=water.collect.getCurrentClip()->w;
     else if ((leftD>=leftB && rightD<=rightB) || (leftD<=rightB && rightD>=rightB)) water.posX+=bird.foe.getCurrentClip()->w;
 }

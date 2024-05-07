@@ -4,12 +4,12 @@
 	<SDL.h>
 	<SDL_image.h>
 
-1715043338 source:d:\study\cpp\gameproject\main.cpp
+1715049644 source:d:\study\cpp\gameproject\main.cpp
 	"game.h"
 
-1714970716 d:\study\cpp\gameproject\defs.h
+1715049644 d:\study\cpp\gameproject\defs.h
 
-1715005087 d:\study\cpp\gameproject\graphics.h
+1715049644 d:\study\cpp\gameproject\graphics.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -17,21 +17,21 @@
 	"defs.h"
 	<bits/stdc++.h>
 
-1715005071 source:d:\study\cpp\gameproject\graphics.cpp
+1715049644 source:d:\study\cpp\gameproject\graphics.cpp
 	<bits/stdc++.h>
 	"graphics.h"
 
-1715043338 d:\study\cpp\gameproject\logic.h
+1715049644 d:\study\cpp\gameproject\logic.h
 	"graphics.h"
 	<ctime>
 	<cstdlib>
 
-1715043338 source:d:\study\cpp\gameproject\logic.cpp
+1715049644 source:d:\study\cpp\gameproject\logic.cpp
 	"logic.h"
 
-1715043338 source:d:\study\cpp\gameproject\game.cpp
+1715049644 source:d:\study\cpp\gameproject\game.cpp
 	"game.h"
 
-1715009774 d:\study\cpp\gameproject\game.h
+1715049644 d:\study\cpp\gameproject\game.h
 	"logic.h"
 
