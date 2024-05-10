@@ -15,6 +15,7 @@ const int ENERGY_GAIN=5;
 const int MAX_POWER=4000;
 const int POWER_GAIN=500;
 const int POWER_LOST=5;
+const int BUFF_DURATION=4000;
 
 const int POW_POS_X=88;
 const int POW_POS_Y=12;
@@ -69,11 +70,12 @@ const int MIN_HEIGHT=220;
 const int CHAR_HEIGHT=76;
 const int CHAR_WIDTH=65;
 
-const int COLLECT_POS_RANGE=200;
+const int WATER_POS_RANGE=200;
+const int BOX_POS_RANGE=5500;
 const int BIRD_POS_RANGE=300;
 const int CASTLE_POS_RANGE=100;
 const int CRAB_POS_RANGE=500;
-const int OVERRIDE_RANGE=30;
+const int OVERRIDE_RANGE=50;
 const int BASE_TYPES=2;
 const int MAX_TYPE=5;
 
@@ -101,6 +103,11 @@ const int CRAB_CLIPS[][4]={{13,109,42,19},{137,109,42,19},{203,109,42,19}};
 const int VANISH_CLIPS[][4]={{21,152,85,80},{143,152,85,80},{275,152,85,80},{21,280,85,80},{143,280,85,80}};
 const int OBS_TRASH_PIXELS=5;
 
+const int FIRE_CLIPS[][4]={{0,0,110,135},{198,0,110,135},{372,0,110,135},{561,0,110,135},{753,0,110,135},{960,0,110,135},{1140,0,110,135},{1329,0,110,135},{1521,0,110,135}};
+const int MBOX[][4]={{0,0,40,40}};
+const int SHIELD[][4]={{0,0,30,82}};
+
+
 const int RUN_FRAMES=sizeof(RUN_CLIPS)/sizeof(int)/4;
 const int JUMP_FRAMES=sizeof(JUMP_CLIPS)/sizeof(int)/4;
 const int FALL_FRAMES=sizeof(FALL_CLIPS)/sizeof(int)/4;
@@ -115,4 +122,6 @@ const int BIRD_FRAMES=sizeof(BIRD_CLIPS)/sizeof(int)/4;
 const int CRAB_FRAMES=sizeof(CRAB_CLIPS)/sizeof(int)/4;
 const int CASTLES=sizeof(CASTLE_TYPES)/sizeof(int)/4;
 const int VANISH_FRAMES=sizeof(VANISH_CLIPS)/sizeof(int)/4;
+
+const int FIRE_FRAMES=sizeof(FIRE_CLIPS)/sizeof(int)/4;
 #endif // _DEFS__H

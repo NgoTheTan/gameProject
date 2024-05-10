@@ -110,10 +110,16 @@ void Obstacle::reset()
     foe.currentFrame=0;
     collect.currentFrame=0;
 }
-Obstacle::Obstacle(SDL_Texture* collectable)
+Obstacle::Obstacle(SDL_Texture* collectable, int _type)
 {
     dead=false;
-    collect.init(collectable, BALL_FRAMES, BALL_CLIPS);
+    type=_type;
+    if (type==WATER){
+        collect.init(collectable, BALL_FRAMES, BALL_CLIPS);
+    }
+    else{
+        collect.init(collectable, 1, MBOX);
+    }
     posX=-100; posY=250;
 }
 void Obstacle::Move(const int accel, const int types)
@@ -141,7 +147,12 @@ void Obstacle::spawn(const int accel)
     posX-=(GROUND_SPEED+accel);
     if (posX+collect.getCurrentClip()->w<0){
         dead=false;
-        posX=rand()%(SCREEN_WIDTH+COLLECT_POS_RANGE)+SCREEN_WIDTH+COLLECT_POS_RANGE;
+        if (type==WATER){
+            posX=rand()%(SCREEN_WIDTH+WATER_POS_RANGE)+SCREEN_WIDTH+WATER_POS_RANGE;
+        }
+        else{
+            posX=rand()%(SCREEN_WIDTH+BOX_POS_RANGE)+SCREEN_WIDTH+BOX_POS_RANGE;
+        }
     }
 }
 
@@ -166,7 +177,29 @@ Bullet::~Bullet()
     SDL_DestroyTexture(splash.texture); splash.texture=NULL;
     SDL_DestroyTexture(shoot.texture); shoot.texture=NULL;
 }
-
+Buff::Buff(SDL_Texture *texture, int frame, const int clips[][4])
+{
+    on=false;
+    buffed.init(texture, frame, clips);
+    duration=BUFF_DURATION;
+}
+void Buff::runOut()
+{
+    if (on){
+        duration-=POWER_LOST;
+        if (duration==0){
+            on=false;
+        }
+    }
+    if (!on){
+        duration=BUFF_DURATION;
+    }
+}
+void Buff::reset()
+{
+    on=false;
+    duration=BUFF_DURATION;
+}
 Sound::Sound(Graphics& graphics)
 {
     gMusic=graphics.loadMusic("assets//sound//gameMusic.mp3");
@@ -184,6 +217,11 @@ Sound::Sound(Graphics& graphics)
     gAttack=graphics.loadSound("assets//sound//attack.wav");
     waterSplash=graphics.loadSound("assets//sound//splash.wav");
     shootWater=graphics.loadSound("assets//sound//shoot.wav");
+    fire=graphics.loadSound("assets//sound//fire.wav");
+    shield=graphics.loadSound("assets//sound//shield.wav");
+    burn=graphics.loadSound("assets//sound//burn.wav");
+    broken=graphics.loadSound("assets//sound//break.wav");
+    warning=graphics.loadSound("assets//sound//warning.wav");
     birdSound=graphics.loadSound("assets//sound//bird.wav");
     deadSound=graphics.loadSound("assets//sound//dead.wav");
     yaySound=graphics.loadSound("assets//sound//yay.wav");
@@ -298,12 +336,13 @@ bool checkHitObstacle(const Bullet* bullet, const SDL_Rect* bullet_clip, const O
     return checkCollision(leftA, rightA, topA, botA, leftB, rightB, topB, botB);
 }
 
-void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water)
+void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, Obstacle &box)
 {
     int leftA=castle.posX-OVERRIDE_RANGE, rightA=castle.posX+castle.foe.getCurrentClip()->w+OVERRIDE_RANGE;
     int leftB=bird.posX-OVERRIDE_RANGE, rightB=bird.posX+bird.foe.getCurrentClip()->w+OVERRIDE_RANGE;
     int leftC=crab.posX-OVERRIDE_RANGE, rightC=crab.posX+crab.foe.getCurrentClip()->w+OVERRIDE_RANGE;
-    int leftD=water.posX, rightD=water.posX+water.collect.getCurrentClip()->w;
+    int leftD=water.posX-OVERRIDE_RANGE, rightD=water.posX+water.collect.getCurrentClip()->w+OVERRIDE_RANGE;
+    int leftE=box.posX-OVERRIDE_RANGE, rightE=box.posX+box.collect.getCurrentClip()->w+OVERRIDE_RANGE;
     if ((leftC>=leftA && rightC<=rightA) || (leftC<=rightA && rightC>=rightA)) castle.posX+=crab.foe.getCurrentClip()->w;
     else if (leftC<=leftA && rightC>=leftA) crab.posX-=castle.foe.getCurrentClip()->w;
     if (leftB<=leftA && rightB>=leftA) bird.posX-=castle.foe.getCurrentClip()->w;
@@ -311,5 +350,9 @@ void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &wa
     if (leftC<=leftB && rightC>=leftB) crab.posX+=bird.foe.getCurrentClip()->w;
     else if ((leftC>=leftB && rightC<=rightB) || (leftC<=rightB && rightC>=rightB)) bird.posX-=(crab.foe.getCurrentClip()->w);
     if (leftD<=leftB && rightD>=leftB) bird.posX-=water.collect.getCurrentClip()->w;
-    else if ((leftD>=leftB && rightD<=rightB) || (leftD<=rightB && rightD>=rightB)) water.posX+=bird.foe.getCurrentClip()->w;
+    else if ((leftD>=leftB && rightD<=rightB) || (leftD<=rightB && rightD>=rightB)) bird.posX-=water.collect.getCurrentClip()->w;
+    if (leftE<=leftB && rightE>=leftB) box.posX+=bird.foe.getCurrentClip()->w;
+    else if ((leftE>=leftB && rightE<=rightB) || (leftE<=rightB && rightE>=rightB)) bird.posX-=box.collect.getCurrentClip()->w;
+    if (leftD<=leftE && rightD>=leftE) water.posX-=(box.collect.getCurrentClip()->w+OVERRIDE_RANGE);
+    else if ((leftD>=leftE && rightD<=rightE) || (leftD<=rightE && rightD>=rightE)) box.posX+=(water.collect.getCurrentClip()->w+OVERRIDE_RANGE);
 }

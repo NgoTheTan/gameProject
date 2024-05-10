@@ -27,17 +27,22 @@ int main(int argc, char* argv[])
     SDL_Texture* lose12=graphics.loadTexture("assets//image//lose12.png");
     SDL_Texture* lose13=graphics.loadTexture("assets//image//lose13.png");
 
+
     ParallaxBackground background;
     graphics.initBackground(background);
 
     SDL_Texture* berieTexture=graphics.loadTexture("assets//image//berie.png");
     Character berie(berieTexture);
+
     SDL_Texture* barTexture=graphics.loadTexture("assets//image//bars.png");
+    SDL_Texture* board=graphics.loadTexture("assets//image//board.png");
 
     SDL_Texture* waterBulletTexture=graphics.loadTexture("assets//image//shooting.png");
     SDL_Texture* waterSplash=graphics.loadTexture("assets//image//hit.png");
     SDL_Texture* waterTexture=graphics.loadTexture("assets//image//water.png");
-    Obstacle water(waterTexture);
+    Obstacle water(waterTexture, WATER);
+    SDL_Texture* boxTexture=graphics.loadTexture("assets//image//box.png");
+    Obstacle box(boxTexture, BOX);
 
     SDL_Texture* vanishTexture=graphics.loadTexture("assets//image//smoke.png");
     SDL_Texture* birdTexture=graphics.loadTexture("assets//image//bird.png");
@@ -46,6 +51,11 @@ int main(int argc, char* argv[])
     Obstacle crab(crabTexture, vanishTexture, CRAB);
     SDL_Texture* castleTexture=graphics.loadTexture("assets//image//castles.png");
     Obstacle castle(castleTexture,vanishTexture, CASTLE);
+
+    SDL_Texture *shieldTexture=graphics.loadTexture("assets//image//shield.png");
+    Buff shield(shieldTexture, 1, SHIELD);
+    SDL_Texture *fireTexture=graphics.loadTexture("assets//image//fire.png");
+    Buff fire(fireTexture, FIRE_FRAMES, FIRE_CLIPS);
 
     SDL_Texture *buttonTexture=graphics.loadTexture("assets//image//button.png");
     Button playButton(buttonTexture, PLAY_BUTTON_POS_X, PLAY_BUTTON_POS_Y, 0,64);
@@ -142,10 +152,11 @@ int main(int argc, char* argv[])
                     graphics.renderBackground(background, speedUp);
                     graphics.renderUI(pauseButton.buttonTexture, pauseButton.posX, pauseButton.posY, pauseButton.texX, pauseButton.texY, SMALL_BUTTON_W, BUTTON_H);
                     if(berie.status!=DEAD && berie.status!=ATTACK) berie.Move();
-                    generateObstacles(berie, graphics, castle, bird, crab, water, speedUp, types, level);
-                    obstacleCollision(graphics, sound, berie, castle, bird, crab, water, score, level);
-                    characterAction(graphics, berie, quitPlay, Lose);
-                    UI(graphics, berie, barTexture, text, score, highScore);
+                    generateObstacles(berie, graphics, castle, bird, crab, water, box, speedUp, types, level);
+                    getBox(graphics, sound, berie, box, shield, fire, speedUp);
+                    obstacleCollision(graphics, sound, berie,shield, fire, castle, bird, crab, water, score, level);
+                    characterAction(graphics, sound, berie,shield, fire, quitPlay, Lose);
+                    UI(graphics, berie, barTexture,board, text, score, highScore);
                     if (bullets.size()>0){
                         shooting(bullets,graphics,castle, bird, speedUp, score, sound, level);
                     }
@@ -188,7 +199,7 @@ int main(int argc, char* argv[])
             }
             bool selectOption=true;
             while (selectOption){
-                workOnLoseSelection(graphics, mainMenuButton, restartButton, gameOverButton, berie, castle, bird, crab, water, selectOption, Menu, Play, quit);
+                workOnLoseSelection(graphics, mainMenuButton, restartButton, gameOverButton, berie, shield, fire, castle, bird, crab, water, box, selectOption, Menu, Play, quit);
                 while (SDL_PollEvent(&event)){
                     if (event.type==SDL_QUIT){
                         quit=true;

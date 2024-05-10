@@ -303,8 +303,8 @@ void intro(Graphics &graphics, SDL_Texture* intro1, SDL_Texture* intro2, SDL_Tex
     SDL_EventState(SDL_MOUSEWHEEL, SDL_ENABLE);
     SDL_EventState(SDL_TEXTINPUT, SDL_ENABLE);
 }
-void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &restartButton, Button &gameOverButton, Character &berie,
-                         Obstacle& castle, Obstacle &bird, Obstacle&crab, Obstacle& water, bool &selectOption, bool &Menu, bool &Play, bool &quit)
+void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &restartButton, Button &gameOverButton, Character &berie, Buff &shield, Buff &fire,
+                         Obstacle& castle, Obstacle &bird, Obstacle&crab, Obstacle& water, Obstacle& box, bool &selectOption, bool &Menu, bool &Play, bool &quit)
 {
     graphics.renderUI(mainMenuButton.buttonTexture, mainMenuButton.posX, mainMenuButton.posY, mainMenuButton.texX, mainMenuButton.texY, HUGE_BUTTON_W, BUTTON_H);
     graphics.renderUI(restartButton.buttonTexture, restartButton.posX, restartButton.posY, restartButton.texX, restartButton.texY, BIG_BUTTON_W, BUTTON_H);
@@ -316,7 +316,8 @@ void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &res
     if (mainMenuButton.clicked){
         Menu=true;
         berie.revive();
-        castle.reset(); bird.reset(); crab.reset(); water.reset();
+        castle.reset(); bird.reset(); crab.reset(); water.reset(); box.reset();
+        fire.reset(); shield.reset();
         selectOption=false;
         mainMenuButton.clicked=false;
         mainMenuButton.texX=0; mainMenuButton.texY=458;
@@ -324,7 +325,8 @@ void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &res
     if (restartButton.clicked){
         Play=true;
         berie.revive();
-        castle.reset(); bird.reset(); crab.reset(); water.reset();
+        castle.reset(); bird.reset(); crab.reset(); water.reset(); box.reset();
+        fire.reset(); shield.reset();
         selectOption=false;
         restartButton.clicked=false;
         restartButton.texX=0; restartButton.texY=326;
@@ -399,7 +401,7 @@ void loseScene(Graphics &graphics, const Character berie, ParallaxBackground &ba
     SDL_EventState(SDL_TEXTINPUT, SDL_ENABLE);
     graphics.playMusic(sound.lMusic);
 }
-void generateObstacles(const Character berie, Graphics &graphics, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, const int speedUp, const int types, const int level)
+void generateObstacles(const Character berie, Graphics &graphics, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, Obstacle& box, const int speedUp, const int types, const int level)
 {
     if (level>=0){
         castle.Move(speedUp, types);
@@ -445,26 +447,87 @@ void generateObstacles(const Character berie, Graphics &graphics, Obstacle &cast
     else{
         water.reset();
     }
-    checkOveride(castle, bird, crab, water);
+    box.spawn(speedUp);
+    if (!box.dead){
+        box.collect.tick();
+        graphics.renderSprite(box.posX, box.posY, box.collect);
+    }
+    checkOveride(castle, bird, crab, water, box);
 }
-void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score,const int level)
+void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie,Buff& shield, Buff &fire, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score,const int level)
 {
     if (checkObstacleCollision(berie, bird, bird.foe.getCurrentClip())){
-        if (berie.status!=DEAD && !bird.dead) graphics.playSound(sound.deadSound);
-        if (!bird.dead) berie.status=DEAD;
+        if (fire.on){
+            if (!bird.dead){
+                graphics.playSound(sound.birdSound);
+                graphics.playSound(sound.burn);
+                score+=(50+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
+                bird.dead=true;
+            }
+        }
+        else if (shield.on){
+            if (!bird.dead) {
+                graphics.playSound(sound.birdSound);
+                graphics.playSound(sound.broken);
+                shield.on=false;
+                bird.dead=true;
+            }
+        }
+        else{
+            if (berie.status!=DEAD && !bird.dead){
+                graphics.playSound(sound.deadSound);
+                berie.status=DEAD;
+            }
+        }
     }
     if (checkObstacleCollision(berie, crab, crab.foe.getCurrentClip())){
-        if (berie.status!=DEAD) graphics.playSound(sound.deadSound);
-        berie.status=DEAD;
+        if (fire.on){
+            if (!crab.dead){
+                graphics.playSound(sound.burn);
+                score+=(100+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
+                crab.dead=true;
+            }
+        }
+        else if (shield.on){
+            if (!crab.dead) {
+                graphics.playSound(sound.broken);
+                shield.on=false;
+                crab.dead=true;
+            }
+        }
+        else{
+            if (berie.status!=DEAD && !crab.dead) {
+                graphics.playSound(sound.deadSound);
+                berie.status=DEAD;
+            }
+        }
     }
     if (checkObstacleCollision(berie, castle, castle.foe.getCurrentClip())){
-        if (berie.status!=ATTACK && !castle.dead){
-            if (berie.status!=DEAD) graphics.playSound(sound.deadSound);
-            berie.status=DEAD;
+        if (fire.on){
+            if (!castle.dead){
+                graphics.playSound(sound.burn);
+                score+=(20+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
+                castle.dead=true;
+            }
         }
-        else {
-            if (!castle.dead) score+=(20+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
+        else if (berie.status==ATTACK){
+            if (!castle.dead){
+                score+=(20+level*SCORE_MULTIPLIER*SCORE_MULTIPLIER);
+            }
             castle.dead=true;
+        }
+        else if (shield.on){
+            if (!castle.dead){
+                graphics.playSound(sound.broken);
+                castle.dead=true;
+                shield.on=false;
+            }
+        }
+        else{
+            if (berie.status!=DEAD && !castle.dead){
+                graphics.playSound(sound.deadSound);
+                berie.status=DEAD;
+            }
         }
     }
     if (checkObstacleCollision(berie, water, water.collect.getCurrentClip())){
@@ -475,8 +538,45 @@ void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Obsta
         water.dead=true;
     }
 }
-void characterAction(Graphics& graphics, Character &berie, bool &quitPlay, bool &Lose)
+void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, Buff &shield, Buff &fire, int &speedUp)
 {
+    if (checkObstacleCollision(berie, box, box.collect.getCurrentClip())){
+        if (!box.dead){
+            graphics.playSound(sound.gCollect);
+            switch (rand()%10)
+            {
+            case 0: case 1: case 2:
+                shield.on=true;
+                graphics.playSound(sound.shield);
+                break;
+            case 4:
+                graphics.playSound(sound.deadSound);
+                berie.status=DEAD;
+                break;
+            case 7:
+                fire.on=true;
+                graphics.playSound(sound.fire);
+                break;
+            case 3: case 5:
+                berie.power=MAX_POWER;
+                break;
+            case 8:
+                speedUp+=4;
+                break;
+            }
+        }
+        box.dead=true;
+    }
+}
+void characterAction(Graphics& graphics, Sound& sound,  Character &berie, Buff &shield, Buff &fire, bool &quitPlay, bool &Lose)
+{
+    if (shield.on) graphics.renderSprite(berie.posX+CHAR_WIDTH, berie.posY, shield.buffed);
+    if (fire.on){
+        fire.buffed.tick();
+        graphics.renderSprite(berie.posX-15, berie.posY-15, fire.buffed);
+        fire.runOut();
+        if (fire.duration==BUFF_DURATION/16) graphics.playSound(sound.warning);
+    }
     if (berie.status!=DEAD){
         if (berie.power==MAX_POWER){
             berie.getGun.tick();
@@ -532,8 +632,9 @@ void characterAction(Graphics& graphics, Character &berie, bool &quitPlay, bool 
         }
     }
 }
-void UI(Graphics& graphics, const Character berie, SDL_Texture* barTexture, Text &text, const int score, const int highScore)
+void UI(Graphics& graphics, const Character berie, SDL_Texture* barTexture, SDL_Texture* board, Text &text, const int score, const int highScore)
 {
+    graphics.renderTexture(board, 0,0);
     graphics.renderUI(barTexture, 10, 5, 0, 0,271,145);
     if (berie.gun && berie.power/POWER_GAIN>=0 && berie.power/POWER_GAIN <=1) graphics.renderUI(barTexture, POW_POS_X, POW_POS_Y, 286,10,POW_WIDTH[0],54);
     else if (berie.power/POWER_GAIN > 0 && berie.power/POWER_GAIN <=1) graphics.renderUI(barTexture, POW_POS_X, POW_POS_Y, 286,10,POW_WIDTH[0],54);

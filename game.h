@@ -16,13 +16,14 @@ void handleContinueButton(Graphics &graphics, SDL_Event *event, Button &continue
 void workOnMenu(Graphics &graphics,SDL_Texture* menu, SDL_Texture* info, SDL_Texture* credit, Text &text, Button &playButton, Button &infoButton, Button &creditButton, Button &quitButton,
                 Button &backButton, bool &inMenu, bool &inInfo, bool &inCredit, bool& quitMenu, bool &Play, bool& quit);
 void intro(Graphics &graphics, SDL_Texture* intro1, SDL_Texture* intro2, SDL_Texture* intro3, SDL_Texture* intro4, Sound &sound);
-void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &restartButton, Button &gameOverButton, Character &berie,
-                         Obstacle& castle, Obstacle &bird, Obstacle&crab, Obstacle& water, bool &selectOption, bool &Menu, bool &Play, bool &quit);
+void workOnLoseSelection(Graphics &graphics, Button &mainMenuButton, Button &restartButton, Button &gameOverButton, Character &berie,Buff &shield, Buff &fire,
+                         Obstacle& castle, Obstacle &bird, Obstacle&crab, Obstacle& water, Obstacle& box, bool &selectOption, bool &Menu, bool &Play, bool &quit);
 void loseScene(Graphics &graphics, const Character berie, ParallaxBackground &background, SDL_Texture* lose1, SDL_Texture* lose2, SDL_Texture* lose3, SDL_Texture* lose4,SDL_Texture* lose5,
                 SDL_Texture* lose6, SDL_Texture* lose7, SDL_Texture* lose8, SDL_Texture* lose9, SDL_Texture* lose10, SDL_Texture* lose11, SDL_Texture* lose12, SDL_Texture* lose13, Sound& sound);
-void generateObstacles(const Character berie, Graphics &graphics, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, const int speedUp, const int types, const int level);
-void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score, const int level);
-void characterAction(Graphics& graphics, Character &berie, bool &quitPlay, bool &Lose);
-void UI(Graphics& graphics, const Character berie, SDL_Texture* barTexture, Text& text, const int score, const int highScore);
+void generateObstacles(const Character berie, Graphics &graphics, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, Obstacle& box, const int speedUp, const int types, const int level);
+void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, Buff &shield, Buff &fire, int &speedUp);
+void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Buff& shield, Buff &fire, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score, const int level);
+void characterAction(Graphics& graphics,Sound& sound, Character &berie, Buff &shield, Buff& fire, bool &quitPlay, bool &Lose);
+void UI(Graphics& graphics, const Character berie, SDL_Texture* barTexture, SDL_Texture* board, Text& text, const int score, const int highScore);
 void update(const Character berie, int &time, int &speedUp,int &level, int &types, int &score);
 #endif // _GAME__H

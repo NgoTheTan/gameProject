@@ -15,6 +15,9 @@
 #define BIRD 1
 #define CASTLE 0
 
+#define WATER 3
+#define BOX 4
+
 #define SMALL_BUTTON 0
 #define MED_BUTTON 1
 #define BIG_BUTTON 2
@@ -50,7 +53,7 @@ struct Obstacle
     Sprite vanish;
     Sprite collect;
     Obstacle(SDL_Texture* enemy, SDL_Texture* effect, int _type);
-    Obstacle (SDL_Texture* collectable);
+    Obstacle (SDL_Texture* collectable, int _type);
     void Move(const int accel, const int types);
     void spawn(const int accel);
     void reset();
@@ -67,6 +70,16 @@ struct Bullet
     void delay(const int accel);
 };
 
+struct Buff
+{
+    int duration;
+    bool on;
+    Sprite buffed;
+    Buff(SDL_Texture *texture, int frame, const int clips[][4]);
+    void runOut();
+    void reset();
+};
+
 struct Sound
 {
     Mix_Music *gMusic;
@@ -81,6 +94,11 @@ struct Sound
     Mix_Chunk *gAttack;
     Mix_Chunk *waterSplash;
     Mix_Chunk *shootWater;
+    Mix_Chunk *fire;
+    Mix_Chunk *shield;
+    Mix_Chunk *burn;
+    Mix_Chunk *broken;
+    Mix_Chunk *warning;
     Mix_Chunk *birdSound;
     Mix_Chunk *deadSound;
     Mix_Chunk *yaySound;
@@ -116,6 +134,6 @@ void shooting(vector<Bullet*> &bullets, Graphics &graphics, Obstacle& castle, Ob
 
 
 bool checkObstacleCollision(const Character character, const Obstacle obstacle, const SDL_Rect* obstacle_clip);
-void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle& water);
+void checkOveride(Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle& water, Obstacle& box);
 
 #endif // _LOGIC__H
