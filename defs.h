@@ -12,10 +12,9 @@ const int SCORE_MULTIPLIER=5;
 const int BASE_ENERGY=585;
 const int ENERGY_LOST=15;
 const int ENERGY_GAIN=5;
-const int MAX_POWER=4000;
-const int POWER_GAIN=500;
-const int POWER_LOST=5;
-const int BUFF_DURATION=4000;
+const int MAX_POWER=800;
+const int POWER_GAIN=100;
+const int POWER_LOST=1;
 
 const int POW_POS_X=88;
 const int POW_POS_Y=12;
@@ -57,7 +56,7 @@ const int L_BUTTON_POS_Y=430;
 const int MAIN_MENU_BUTTON_POS_X=200;
 const int RESTART_BUTTON_POS_X=400;
 const int GAME_OVER_BUTTON_POS_X=568;
-const int PAUSE_CONTINUE_BUTTON_POS_X=450;
+const int PAUSE_CONTINUE_BUTTON_POS_X=452;
 const int PAUSE_CONTINUE_BUTTON_POS_Y=10;
 
 const int GROUND=415;
@@ -71,11 +70,11 @@ const int CHAR_HEIGHT=76;
 const int CHAR_WIDTH=65;
 
 const int WATER_POS_RANGE=200;
-const int BOX_POS_RANGE=5500;
+const int BOX_POS_RANGE=5000;
 const int BIRD_POS_RANGE=300;
 const int CASTLE_POS_RANGE=100;
 const int CRAB_POS_RANGE=500;
-const int OVERRIDE_RANGE=50;
+const int OVERRIDE_RANGE=30;
 const int BASE_TYPES=2;
 const int MAX_TYPE=5;
 

@@ -23,7 +23,7 @@ void loseScene(Graphics &graphics, const Character berie, ParallaxBackground &ba
 void generateObstacles(const Character berie, Graphics &graphics, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, Obstacle& box, const int speedUp, const int types, const int level);
 void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, Buff &shield, Buff &fire, int &speedUp);
 void obstacleCollision(Graphics& graphics, Sound &sound, Character &berie, Buff& shield, Buff &fire, Obstacle &castle, Obstacle &bird, Obstacle &crab, Obstacle &water, int &score, const int level);
-void characterAction(Graphics& graphics,Sound& sound, Character &berie, Buff &shield, Buff& fire, bool &quitPlay, bool &Lose);
-void UI(Graphics& graphics, const Character berie, SDL_Texture* barTexture, SDL_Texture* board, Text& text, const int score, const int highScore);
+void characterAction(Graphics& graphics, Character &berie, Buff &shield, Buff& fire, bool &quitPlay, bool &Lose);
+void UI(Graphics& graphics, const Character berie, Buff &fire, SDL_Texture* barTexture, SDL_Texture* board, Text& text, const int score, const int highScore);
 void update(const Character berie, int &time, int &speedUp,int &level, int &types, int &score);
 #endif // _GAME__H

@@ -545,37 +545,46 @@ void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, B
             graphics.playSound(sound.gCollect);
             switch (rand()%10)
             {
-            case 0: case 1: case 2:
-                shield.on=true;
-                graphics.playSound(sound.shield);
-                break;
-            case 4:
-                graphics.playSound(sound.deadSound);
-                berie.status=DEAD;
-                break;
-            case 7:
-                fire.on=true;
+//            case 1: case 2: case 3:
+//                shield.on=true;
+//                graphics.playSound(sound.shield);
+//                break;
+//            case 4:
+//                graphics.playSound(sound.deadSound);
+//                berie.status=DEAD;
+//                break;
+//            case 7:
+//                if (fire.on){
+//                    fire.duration=MAX_POWER;
+//                }
+//                else fire.on=true;
+//                graphics.playSound(sound.fire);
+//                break;
+//            case 5: case 6:
+//                berie.power=MAX_POWER;
+//                break;
+//            case 0:
+//                speedUp+=4;
+//                break;
+            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+                if (fire.on){
+                    fire.duration=MAX_POWER;
+                }
+                else fire.on=true;
                 graphics.playSound(sound.fire);
-                break;
-            case 3: case 5:
-                berie.power=MAX_POWER;
-                break;
-            case 8:
-                speedUp+=4;
                 break;
             }
         }
         box.dead=true;
     }
 }
-void characterAction(Graphics& graphics, Sound& sound,  Character &berie, Buff &shield, Buff &fire, bool &quitPlay, bool &Lose)
+void characterAction(Graphics& graphics,  Character &berie, Buff &shield, Buff &fire, bool &quitPlay, bool &Lose)
 {
     if (shield.on) graphics.renderSprite(berie.posX+CHAR_WIDTH, berie.posY, shield.buffed);
     if (fire.on){
         fire.buffed.tick();
         graphics.renderSprite(berie.posX-15, berie.posY-15, fire.buffed);
         fire.runOut();
-        if (fire.duration==BUFF_DURATION/16) graphics.playSound(sound.warning);
     }
     if (berie.status!=DEAD){
         if (berie.power==MAX_POWER){
@@ -632,10 +641,14 @@ void characterAction(Graphics& graphics, Sound& sound,  Character &berie, Buff &
         }
     }
 }
-void UI(Graphics& graphics, const Character berie, SDL_Texture* barTexture, SDL_Texture* board, Text &text, const int score, const int highScore)
+void UI(Graphics& graphics, const Character berie, Buff& fire, SDL_Texture* barTexture, SDL_Texture* board, Text &text, const int score, const int highScore)
 {
+    if (fire.on){
+        graphics.renderUI(barTexture, 275, 70, 30,144, 410, 64);
+        graphics.renderUI(barTexture, 278, 113, 33, 209, fire.duration/2, 18);
+    }
     graphics.renderTexture(board, 0,0);
-    graphics.renderUI(barTexture, 10, 5, 0, 0,271,145);
+    graphics.renderUI(barTexture, 10, 5, 0, 0,271,143);
     if (berie.gun && berie.power/POWER_GAIN>=0 && berie.power/POWER_GAIN <=1) graphics.renderUI(barTexture, POW_POS_X, POW_POS_Y, 286,10,POW_WIDTH[0],54);
     else if (berie.power/POWER_GAIN > 0 && berie.power/POWER_GAIN <=1) graphics.renderUI(barTexture, POW_POS_X, POW_POS_Y, 286,10,POW_WIDTH[0],54);
     else if (berie.power/POWER_GAIN >= 1 && berie.power/POWER_GAIN <=2) graphics.renderUI(barTexture, POW_POS_X, POW_POS_Y, 286,10,POW_WIDTH[1],54);

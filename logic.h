@@ -98,7 +98,6 @@ struct Sound
     Mix_Chunk *shield;
     Mix_Chunk *burn;
     Mix_Chunk *broken;
-    Mix_Chunk *warning;
     Mix_Chunk *birdSound;
     Mix_Chunk *deadSound;
     Mix_Chunk *yaySound;

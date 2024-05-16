@@ -110,13 +110,13 @@ int main(int argc, char* argv[])
         if (Play){
             Uint32 frameStart;
             int frameTime;
-            srand(time(0));
-            int time=0, level=0, speedUp=0, types=BASE_TYPES;
+            int Time=0, level=0, speedUp=0, types=BASE_TYPES;
             score=0;
             vector<Bullet*> bullets;
             graphics.playMusic(sound.gMusic);
             bool quitPlay=false;
             while (!quitPlay){
+                srand(time(0));
                 frameStart=SDL_GetTicks();
                 while (SDL_PollEvent(&event)) {
                     if (event.type == SDL_QUIT) {
@@ -155,8 +155,8 @@ int main(int argc, char* argv[])
                     generateObstacles(berie, graphics, castle, bird, crab, water, box, speedUp, types, level);
                     getBox(graphics, sound, berie, box, shield, fire, speedUp);
                     obstacleCollision(graphics, sound, berie,shield, fire, castle, bird, crab, water, score, level);
-                    characterAction(graphics, sound, berie,shield, fire, quitPlay, Lose);
-                    UI(graphics, berie, barTexture,board, text, score, highScore);
+                    characterAction(graphics, berie,shield, fire, quitPlay, Lose);
+                    UI(graphics, berie,fire,  barTexture,board, text, score, highScore);
                     if (bullets.size()>0){
                         shooting(bullets,graphics,castle, bird, speedUp, score, sound, level);
                     }
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
                         graphics.playSound(sound.yaySound);
                         SDL_Delay(500);
                     }
-                    update(berie, time, speedUp, level, types, score);
+                    update(berie, Time, speedUp, level, types, score);
                 }
                 else{
                     Mix_PauseMusic();

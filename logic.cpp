@@ -51,10 +51,12 @@ void Character::Move()
 	if (posY==GROUND) status=RUN;
 	if (energy<BASE_ENERGY) energy+=ENERGY_GAIN;
 	if (power==MAX_POWER){
-        gun=true;
-        runWithGun.currentFrame=run.currentFrame;
-        jumpWithGun.currentFrame=jump.currentFrame;
-        fallWithGun.currentFrame=fall.currentFrame;
+        if (!gun){
+            gun=true;
+            runWithGun.currentFrame=run.currentFrame;
+            jumpWithGun.currentFrame=jump.currentFrame;
+            fallWithGun.currentFrame=fall.currentFrame;
+        }
 	}
 	if (power>0 && gun){
         power-=POWER_LOST;
@@ -181,7 +183,7 @@ Buff::Buff(SDL_Texture *texture, int frame, const int clips[][4])
 {
     on=false;
     buffed.init(texture, frame, clips);
-    duration=BUFF_DURATION;
+    duration=MAX_POWER;
 }
 void Buff::runOut()
 {
@@ -192,13 +194,13 @@ void Buff::runOut()
         }
     }
     if (!on){
-        duration=BUFF_DURATION;
+        duration=MAX_POWER;
     }
 }
 void Buff::reset()
 {
     on=false;
-    duration=BUFF_DURATION;
+    duration=MAX_POWER;
 }
 Sound::Sound(Graphics& graphics)
 {
@@ -221,7 +223,6 @@ Sound::Sound(Graphics& graphics)
     shield=graphics.loadSound("assets//sound//shield.wav");
     burn=graphics.loadSound("assets//sound//burn.wav");
     broken=graphics.loadSound("assets//sound//break.wav");
-    warning=graphics.loadSound("assets//sound//warning.wav");
     birdSound=graphics.loadSound("assets//sound//bird.wav");
     deadSound=graphics.loadSound("assets//sound//dead.wav");
     yaySound=graphics.loadSound("assets//sound//yay.wav");
