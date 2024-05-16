@@ -545,33 +545,26 @@ void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, B
             graphics.playSound(sound.gCollect);
             switch (rand()%10)
             {
-//            case 1: case 2: case 3:
-//                shield.on=true;
-//                graphics.playSound(sound.shield);
-//                break;
-//            case 4:
-//                graphics.playSound(sound.deadSound);
-//                berie.status=DEAD;
-//                break;
-//            case 7:
-//                if (fire.on){
-//                    fire.duration=MAX_POWER;
-//                }
-//                else fire.on=true;
-//                graphics.playSound(sound.fire);
-//                break;
-//            case 5: case 6:
-//                berie.power=MAX_POWER;
-//                break;
-//            case 0:
-//                speedUp+=4;
-//                break;
-            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+            case 1: case 2: case 3:
+                shield.on=true;
+                graphics.playSound(sound.shield);
+                break;
+            case 4:
+                graphics.playSound(sound.deadSound);
+                berie.status=DEAD;
+                break;
+            case 7:
                 if (fire.on){
                     fire.duration=MAX_POWER;
                 }
                 else fire.on=true;
                 graphics.playSound(sound.fire);
+                break;
+            case 5: case 6:
+                berie.power=MAX_POWER;
+                break;
+            case 0:
+                speedUp+=4;
                 break;
             }
         }
