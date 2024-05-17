@@ -543,9 +543,9 @@ void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, B
     if (checkObstacleCollision(berie, box, box.collect.getCurrentClip())){
         if (!box.dead){
             graphics.playSound(sound.gCollect);
-            switch (rand()%10)
+            switch (rand()%20)
             {
-            case 1: case 2: case 3:
+            case 1: case 2: case 3: case 20: case 19: case 18: case 9:
                 shield.on=true;
                 graphics.playSound(sound.shield);
                 break;
@@ -553,17 +553,17 @@ void getBox(Graphics& graphics, Sound &sound, Character &berie, Obstacle &box, B
                 graphics.playSound(sound.deadSound);
                 berie.status=DEAD;
                 break;
-            case 7:
+            case 7: case 17: case 10:
                 if (fire.on){
                     fire.duration=MAX_POWER;
                 }
                 else fire.on=true;
                 graphics.playSound(sound.fire);
                 break;
-            case 5: case 6:
+            case 5: case 6: case 15: case 16:
                 berie.power=MAX_POWER;
                 break;
-            case 0:
+            case 0: case 13:
                 speedUp+=4;
                 break;
             }

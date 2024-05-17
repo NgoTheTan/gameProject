@@ -7,7 +7,7 @@
 1715824610 source:d:\study\cpp\gameproject\main.cpp
 	"game.h"
 
-1715826764 d:\study\cpp\gameproject\defs.h
+1715877089 d:\study\cpp\gameproject\defs.h
 
 1715049644 d:\study\cpp\gameproject\graphics.h
 	<SDL.h>
@@ -29,7 +29,7 @@
 1715606894 source:d:\study\cpp\gameproject\logic.cpp
 	"logic.h"
 
-1715826552 source:d:\study\cpp\gameproject\game.cpp
+1715853537 source:d:\study\cpp\gameproject\game.cpp
 	"game.h"
 
 1715824603 d:\study\cpp\gameproject\game.h

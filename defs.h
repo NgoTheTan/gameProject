@@ -71,10 +71,10 @@ const int CHAR_WIDTH=65;
 
 const int WATER_POS_RANGE=200;
 const int BOX_POS_RANGE=5000;
-const int BIRD_POS_RANGE=300;
-const int CASTLE_POS_RANGE=100;
-const int CRAB_POS_RANGE=500;
-const int OVERRIDE_RANGE=30;
+const int BIRD_POS_RANGE=500;
+const int CASTLE_POS_RANGE=0;
+const int CRAB_POS_RANGE=400;
+const int OVERRIDE_RANGE=40;
 const int BASE_TYPES=2;
 const int MAX_TYPE=5;
 
