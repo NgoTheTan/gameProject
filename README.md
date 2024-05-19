@@ -7,3 +7,5 @@
 - Bản thân em cũng học thêm về phần âm thanh (Mix_HaltMusic, Mix_PauseMusic, Mix_ResumeMusic) và phần event (SDL_EventState, SDL_WaitEventTimeOut cũng như các event type của chuột, bàn phím và window).
 - Thuật toán: cố định FPS, parallax background.
 - Điểm nổi bật: Hình ảnh đẹp, sinh động cùng âm thanh sống động, phù hợp với từng khung cảnh.
+
+Link video demo: https://drive.google.com/drive/folders/1tn8qronhPVtJWsVGRle6NypYEy0PfSNZ?usp=sharing
