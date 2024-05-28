@@ -8,4 +8,4 @@
 - Thuật toán: cố định FPS, parallax background.
 - Điểm nổi bật: Hình ảnh đẹp, sinh động cùng âm thanh sống động, phù hợp với từng khung cảnh.
 
-Link video demo: https://drive.google.com/drive/folders/1tn8qronhPVtJWsVGRle6NypYEy0PfSNZ?usp=sharing
+Link video demo: https://youtu.be/fklb3m-O3QM?si=JQWQr6VOpkpifzaq
